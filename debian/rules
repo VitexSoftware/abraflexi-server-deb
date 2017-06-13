@@ -3,6 +3,17 @@
 %:
 	dh $@
 
+override_dh_build:
+	dh_build
+
 override_dh_install:
 	dh_install
+	rm -rf data/usr/bin
+	rm -rf data/usr/share/app-install
+	rm -rf data/usr/share/applications
+	rm -rf data/usr/share/fonts
+	rm -rf data/usr/share/mime
+	rm -rf data/usr/share/mimelnk
+	rm -rf data/usr/share/pixmaps
+	./serveronlyjars.sh
 	mv data/*	debian/flexibee-server
