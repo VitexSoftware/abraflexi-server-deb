@@ -20,9 +20,9 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-   config.push.define "atlas" do |push|
-     push.app = "vitexsoftware/flexibee"
-   end
+#  config.push.define "atlas" do |push|
+#     push.app = "vitexsoftware/flexibee"
+#  end
 
    config.vm.provision "shell", inline: <<-SHELL
      apt-get update
@@ -30,17 +30,18 @@ Vagrant.configure("2") do |config|
      echo cs_CZ.utf8 UTF-8 >> /etc/locale.gen
      locale-gen 
      update-locale
-     export LC_ALL="cs_CZ.utf8"
+     export LC_ALL="cs_CZ.UTF-8"
      echo network winstrom/local-network string | debconf-set-selections
 
      apt-get -y install gdebi-core curl locales
-     CURVER="`curl -s https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep h2 | awk '{gsub("<[^>]*>", "")}1'| awk '{print $2}'`"
-     IFS='.' read -r -a array <<< "$CURVER"
-     GETURL="http://download.flexibee.eu/download/${array[0]}.${array[1]}/$CURVER/flexibee_${CURVER}_all.deb"
-     wget $GETURL
-     gdebi --n --q flexibee_${CURVER}_all.deb
+#     CURVER="`curl -s https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep h2 | awk '{gsub("<[^>]*>", "")}1'| awk '{print $2}'`"
+#     IFS='.' read -r -a array <<< "$CURVER"
+#     GETURL="http://download.flexibee.eu/download/${array[0]}.${array[1]}/$CURVER/flexibee_${CURVER}_all.deb"
+#     wget $GETURL
+#     PACKAGE=`ls /vagrant/flexibee-server_*_all.deb`
+     gdebi --n --q `ls /vagrant/flexibee-server_*_all.deb`
      echo FLEXIBEE_CFG=server >> /etc/default/flexibee
-     dpkg-reconfigure flexibee
+#     dpkg-reconfigure flexibee
      service flexibee status
    SHELL
 end

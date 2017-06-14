@@ -15,5 +15,4 @@ override_dh_install:
 	rm -rf data/usr/share/mime
 	rm -rf data/usr/share/mimelnk
 	rm -rf data/usr/share/pixmaps
-	./serveronlyjars.sh
 	mv data/*	debian/flexibee-server
