@@ -1,13 +1,22 @@
 #!/bin/bash
 
 PACKAGE="flexibee-server"
-wget -c http://download.flexibee.eu.s3-website.eu-central-1.amazonaws.com/download/2017.1/2017.1.11/flexibee_2017.1.11_all.deb
+
+LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}'`
+LATESTPKG=`basename $LATESTURL`
+
+if [ ! -f $LATESTPKG ];
+then
+    wget -c $LATESTURL
+fi
+
+
 VERSION=`ls flexibee_*_all.deb | awk -F_ '{print $2}'`
 REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
 
 echo XXXXXXXXXXXXXXXXXXXXXXXXXX $VERSION-$REVISION
 
-rm -rf tmp debian/data
+rm -rf tmp debian/data data
 
 mkdir tmp
 cd tmp

@@ -1,0 +1,182 @@
+#!/bin/bash
+
+
+. /usr/share/debconf/confmodule
+
+set -e
+MYLANG=`echo $LANG | cut -c 1-2`
+
+# get install type from dbconf database
+db_get winstrom/local-network || true
+    
+INSTALL_TYPE=local
+
+if [ "x$RET" = "xnetwork" ]; then
+	db_get winstrom/server-client || true 
+	if [ "x$RET" = "xclient" ]; then 
+		INSTALL_TYPE=client
+		INSTALL_DB=false
+	else
+		INSTALL_TYPE=server
+		INSTALL_DB=true
+	fi
+fi
+
+# if it's not a client instalation type check for cs_CZ.utf8 locale (and exit if it's missing)
+if [ "x$INSTALL_TYPE" != "xclient" ] && [ -x "/usr/bin/localectl" ]; then
+	
+	FOUND=0
+	LOCALES=`localectl list-locales`
+
+	for LOC in $LOCALES; do
+        	LOC_LOWER=$(echo "$LOC" | tr '[:upper:]' '[:lower:]')
+        	if [ "$LOC_LOWER" = "cs_cz.utf8" ]; then
+                	FOUND=1
+        	fi
+	done
+
+	if [ "$FOUND" -eq "0" ]; then
+		echo ""
+    		if [ "x$MYLANG" = "xcs" ]; then
+			echo "  Chyba: K běhu FlexiBee Server je nutné cs_CZ.utf8 locale. Můžete ho přidat pomocí 'sudo locale-gen cs_CZ.utf8; sudo update-locale'";
+    		else 
+			echo "  Error: FlexiBee Server needs cs_CZ.utf8 locale to run. You can add it with 'sudo locale-gen cs_CZ.utf8; sudo update-locale'";
+    		fi
+		exit 1;
+	fi
+	
+fi
+
+
+# it is not hard to overcome this. This is for letting the user know in advance that the installation will fail (license is checked at startup)
+LICENSE_CHECKER_CP=""
+for i in /usr/share/flexibee/lib/postgresql-*.jar /usr/share/flexibee/lib/winstrom-connector-*.jar /usr/share/flexibee/lib/LicenseChecker.jar; do
+	LICENSE_CHECKER_CP=$LICENSE_CHECKER_CP:$i
+done
+
+OK=true
+/usr/bin/java -cp $LICENSE_CHECKER_CP cz.winstrom.Checker /usr/share/flexibee/lib/winstrom-connector*.jar || OK=false
+if [ x$OK = xfalse ]; then
+    echo ""
+    if [ "x$MYLANG" = "xcs" ]; then
+	echo "  Chyba: Pokoušíte se aktualizovat na novější verzi systému FlexiBee než vás opravňuje zaplacená služba záruka. Vraťte původní verzi a nebo kontaktujte dodavatele systému a prodlužte si záruku.";
+    else 
+	echo "  Error: You are trying to update to a newer version of FlexiBee system than allowed in your license. Please put back the original version or contact the producer and prolong your license.";
+    fi
+    echo ""
+    exit 1
+fi
+
+if [ -f /usr/bin/update-mime-database ]; then
+	/usr/bin/update-mime-database /usr/share/mime/ > /dev/null || true
+fi
+
+if [ -f /usr/bin/xdg-desktop-menu ]; then
+    /usr/bin/xdg-desktop-menu install --novendor /usr/share/applications/flexibee.desktop > /dev/null || true
+fi
+if [ -f /usr/bin/xdg-mime ]; then
+    /usr/bin/xdg-mime install --novendor /usr/share/mime/packages/flexibee.xml > /dev/null  || true
+fi
+if [ -f /usr/bin/xdg-icon-resource ]; then
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-connection.png flexibee-connection
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png flexibee-backup
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png flexibee-license
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-query.png flexibee-query
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-report.png flexibee-report
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png flexibee-xml
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-isdoc.png flexibee-isdoc
+
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png winstrom-backup
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png winstrom-license
+    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png winstrom-xml
+fi
+
+INSTALL_DB=true
+
+CLIENT_TYPE=client
+
+# check if PostgreSQL cluster is installed.
+if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then 
+
+	DBVERSION=8.2
+	PATHPGSQL="/usr/lib/postgresql/"
+	SUPPORTEDVERSIONS=( "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" "8.4" "8.3" "8.2" )
+	for ver in "${SUPPORTEDVERSIONS[@]}"
+	do
+		if [ -d $PATHPGSQL$ver ]; then 
+			DBVERSION=$ver
+			break;
+		fi
+	done
+
+	if [ "x$INSTALL_TYPE" != "xclient" ]; then
+		if [ ! -f /etc/flexibee/ws.cenServer.xml -a -f /usr/share/flexibee/ws.cenServer.xml ]; then
+			cp /usr/share/flexibee/ws.cenServer.xml /etc/flexibee/ws.cenServer.xml || true
+		fi
+	fi
+
+	if [ "x$INSTALL_DB" = "xtrue" ]; then
+		PG_USER=postgres
+		PG_GROUP=postgres
+		PG_PORT=5435
+	
+		if [ "x$MYLANG" = "xcs" ]; then
+			echo "Připravuji databázi PostgreSQL pro systém FlexiBee ..."
+		else
+			echo "Preparing PostgreSQL for FlexiBee ..."
+		fi
+
+		# check for cluster existance
+		EXISTING=0
+		/usr/bin/pg_lsclusters  | grep -e winstrom -e flexibee 2>/dev/null > /dev/null && EXISTING=1
+		if [ "x$EXISTING" = "x0" ]; then
+			if [ "x$MYLANG" = "xcs" ]; then
+				echo -n "  Vytvářím novou databázi ... "
+			else
+				echo -n "  Creating new database ... "
+			fi
+			/usr/bin/pg_createcluster --port=$PG_PORT --datadir=/var/lib/flexibee --encoding=utf-8 --locale=cs_CZ.utf8 --user=$PG_USER --group=$PG_GROUP --start-conf=auto --socketdir=/var/run/postgresql/ "$DBVERSION" flexibee > /dev/null 
+			echo "ok"
+		else 
+			if [ "x$MYLANG" = "xcs" ]; then
+				echo "  Použiji existující databázi ..."
+			else
+				echo "  Using existing database ..."
+			fi
+		fi
+
+	
+		if [ -f /usr/sbin/update-rc.d ]; then
+		    /usr/sbin/update-rc.d flexibee start 90 2 3 5 . stop 20 0 1 6 . > /dev/null
+		fi
+
+		if [ -f /usr/share/flexibee/bin/initdb.sh ]; then
+			/usr/share/flexibee/bin/initdb.sh || exit 1
+		fi
+
+	fi
+fi
+
+if [ -f /etc/init.d/flexibee -a x$INSTALL_TYPE != xclient ]; then
+	/etc/init.d/flexibee start || exit 1
+fi
+
+# the keyring in /var that gets fetched by apt-key net-update
+# if it does not yet exist, copy it to avoid uneeded net copy
+KEYRINGDIR="/var/lib/apt/keyrings"
+KEYRING="${KEYRINGDIR}/flexibee.gpg"
+
+if ! test -d $KEYRINGDIR; then
+     mkdir -m 755 -p $KEYRINGDIR
+fi
+
+if ! test -f $KEYRING; then
+     cp /usr/share/flexibee/flexibee.gpg $KEYRING
+     touch $KEYRING
+     apt-key add $KEYRING
+fi
+
+
+db_stop
+
+exit 0

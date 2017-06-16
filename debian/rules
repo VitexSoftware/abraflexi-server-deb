@@ -15,4 +15,8 @@ override_dh_install:
 	rm -rf data/usr/share/mime
 	rm -rf data/usr/share/mimelnk
 	rm -rf data/usr/share/pixmaps
+	mkdir -p data/etc/avahi/services/
+	cp bonus/flexibee.service  data/etc/avahi/services/
+	echo FLEXIBEE_CFG=server >> data/etc/default/flexibee
 	mv data/*	debian/flexibee-server
+

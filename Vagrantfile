@@ -31,16 +31,14 @@ Vagrant.configure("2") do |config|
      locale-gen 
      update-locale
      export LC_ALL="cs_CZ.UTF-8"
-     echo network winstrom/local-network string | debconf-set-selections
 
-     apt-get -y install gdebi-core curl locales
+     apt-get -y install gdebi-core curl locales mc htop screen
 #     CURVER="`curl -s https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep h2 | awk '{gsub("<[^>]*>", "")}1'| awk '{print $2}'`"
 #     IFS='.' read -r -a array <<< "$CURVER"
 #     GETURL="http://download.flexibee.eu/download/${array[0]}.${array[1]}/$CURVER/flexibee_${CURVER}_all.deb"
 #     wget $GETURL
 #     PACKAGE=`ls /vagrant/flexibee-server_*_all.deb`
      gdebi --n --q `ls /vagrant/flexibee-server_*_all.deb`
-     echo FLEXIBEE_CFG=server >> /etc/default/flexibee
 #     dpkg-reconfigure flexibee
      service flexibee status
    SHELL
