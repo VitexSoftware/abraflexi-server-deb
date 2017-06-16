@@ -1,6 +1,7 @@
-flexibee-server (2017.1.11-0) UNRELEASED; urgency=medium
+flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * Added Support for Avahi
+  * Package update
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Fri, 16 Jun 2017 12:27:49 +0200
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Fri, 16 Jun 2017 12:40:19 +0200

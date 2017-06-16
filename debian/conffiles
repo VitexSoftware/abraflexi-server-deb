@@ -1,7 +1,9 @@
+etc/default/flexibee
+etc/flexibee/flexibee-server.xml
+etc/logrotate.d/flexibee
 /etc/logrotate.d/flexibee
 /etc/ufw/applications.d/flexibee
 /etc/apt/sources.list.d/flexibee.list
 /etc/default/flexibee
 /etc/init.d/flexibee
 /etc/flexibee/flexibee-server.xml
-/etc/avahi/services/flexibee.service
