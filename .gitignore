@@ -10,3 +10,4 @@ debian/lastversion
 debian/md5sums
 flexibee_*
 debian/files
+/.vagrant/

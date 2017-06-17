@@ -47,25 +47,12 @@ if [ "x$INSTALL_TYPE" != "xclient" ] && [ -x "/usr/bin/localectl" ]; then
 	
 fi
 
-
-# it is not hard to overcome this. This is for letting the user know in advance that the installation will fail (license is checked at startup)
-LICENSE_CHECKER_CP=""
-for i in /usr/share/flexibee/lib/postgresql-*.jar /usr/share/flexibee/lib/winstrom-connector-*.jar /usr/share/flexibee/lib/LicenseChecker.jar; do
-	LICENSE_CHECKER_CP=$LICENSE_CHECKER_CP:$i
-done
-
-OK=true
-/usr/bin/java -cp $LICENSE_CHECKER_CP cz.winstrom.Checker /usr/share/flexibee/lib/winstrom-connector*.jar || OK=false
-if [ x$OK = xfalse ]; then
-    echo ""
-    if [ "x$MYLANG" = "xcs" ]; then
-	echo "  Chyba: Pokoušíte se aktualizovat na novější verzi systému FlexiBee než vás opravňuje zaplacená služba záruka. Vraťte původní verzi a nebo kontaktujte dodavatele systému a prodlužte si záruku.";
-    else 
-	echo "  Error: You are trying to update to a newer version of FlexiBee system than allowed in your license. Please put back the original version or contact the producer and prolong your license.";
-    fi
-    echo ""
-    exit 1
+if [ -f /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/accessibility.properties ]
+then
+    sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/accessibility.properties
 fi
+
+flexibee-licensecheck
 
 if [ -f /usr/bin/update-mime-database ]; then
 	/usr/bin/update-mime-database /usr/share/mime/ > /dev/null || true
@@ -109,11 +96,9 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 		fi
 	done
 
-	if [ "x$INSTALL_TYPE" != "xclient" ]; then
 		if [ ! -f /etc/flexibee/ws.cenServer.xml -a -f /usr/share/flexibee/ws.cenServer.xml ]; then
 			cp /usr/share/flexibee/ws.cenServer.xml /etc/flexibee/ws.cenServer.xml || true
 		fi
-	fi
 
 	if [ "x$INSTALL_DB" = "xtrue" ]; then
 		PG_USER=postgres
@@ -157,9 +142,7 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 	fi
 fi
 
-if [ -f /etc/init.d/flexibee -a x$INSTALL_TYPE != xclient ]; then
-	/etc/init.d/flexibee start || exit 1
-fi
+service flexibee start || exit 1
 
 # the keyring in /var that gets fetched by apt-key net-update
 # if it does not yet exist, copy it to avoid uneeded net copy

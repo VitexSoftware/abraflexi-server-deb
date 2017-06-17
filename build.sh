@@ -23,15 +23,13 @@ mkdir tmp
 cd tmp
 ar -x ../flexibee_${VERSION}_all.deb
 cd ..
-cd debian
-tar xzvf ../tmp/control.tar.gz
-cd ..
+#cd debian
+#tar xzvf ../tmp/control.tar.gz
+#cd ..
 mkdir data
 cd data
 tar xzvf ../tmp/data.tar.gz
 cd ..
-
-cp -f debian/control.base debian/control
 
 CHANGES=`git log -n 1 | tail -n+5`
 dch -b -v $VERSION-$REVISION --package $PACKAGE $CHANGES
@@ -49,3 +47,6 @@ rm -rf data
 
 echo $VERSION > debian/lastversion
 echo $REVISION > debian/revision
+
+echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION-$REVISION done
+

@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
      update-locale
      export LC_ALL="cs_CZ.UTF-8"
 
-     apt-get -y install gdebi-core curl locales mc htop screen
+     apt-get -y install gdebi-core curl locales mc htop screen net-tools html2text
 #     CURVER="`curl -s https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep h2 | awk '{gsub("<[^>]*>", "")}1'| awk '{print $2}'`"
 #     IFS='.' read -r -a array <<< "$CURVER"
 #     GETURL="http://download.flexibee.eu/download/${array[0]}.${array[1]}/$CURVER/flexibee_${CURVER}_all.deb"
@@ -41,5 +41,8 @@ Vagrant.configure("2") do |config|
      gdebi --n --q `ls /vagrant/flexibee-server_*_all.deb`
 #     dpkg-reconfigure flexibee
      service flexibee status
+
+      curl -k -v https://127.0.0.1:5434/login-logout/first-user-form | html2text
+
    SHELL
 end
