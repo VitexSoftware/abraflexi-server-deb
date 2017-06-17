@@ -9,24 +9,7 @@ if [ -f /usr/bin/pg_createcluster ]; then
 
        . /usr/share/debconf/confmodule
 
-	# ask user for local database
-	db_input high winstrom/local-network || true
-	db_go || true
-
-	db_get winstrom/local-network 
-    
-	if [ "x$RET" = "xnetwork" ]; then
-		db_input high winstrom/server-client || true
-		db_go || RET=true
-		db_get winstrom/server-client 
-		if [ "x$RET" = "xserver" ]; then
-		    TYPE="server"
-		else
-		    TYPE="client"
-		fi
-	else
-	    TYPE="local"
-	fi
+    TYPE="server"
 
 fi
 

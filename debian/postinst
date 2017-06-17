@@ -6,24 +6,11 @@
 set -e
 MYLANG=`echo $LANG | cut -c 1-2`
 
-# get install type from dbconf database
-db_get winstrom/local-network || true
-    
-INSTALL_TYPE=local
-
-if [ "x$RET" = "xnetwork" ]; then
-	db_get winstrom/server-client || true 
-	if [ "x$RET" = "xclient" ]; then 
-		INSTALL_TYPE=client
-		INSTALL_DB=false
-	else
-		INSTALL_TYPE=server
-		INSTALL_DB=true
-	fi
-fi
+INSTALL_TYPE=server
+INSTALL_DB=true
 
 # if it's not a client instalation type check for cs_CZ.utf8 locale (and exit if it's missing)
-if [ "x$INSTALL_TYPE" != "xclient" ] && [ -x "/usr/bin/localectl" ]; then
+if [ -x "/usr/bin/localectl" ]; then
 	
 	FOUND=0
 	LOCALES=`localectl list-locales`
