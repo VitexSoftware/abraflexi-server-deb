@@ -9,22 +9,21 @@ Homepage: https://www.vitexsoftware.cz/
 
 Package: flexibee-server
 Architecture: all
-Depends: openjdk-8-jre-headless, postgresql-client-common, postgresql-9.6 | postgresql-9.5 | postgresql-9.4 | postgresql-9.3 | postgresql-9.2 | postgresql-9.1 | postgresql-9.0 | postgresql-8.4 | postgresql-8.3 | postgresql (>= 8.3), postgresql-pltcl | postgresql-pltcl-9.6 | postgresql-pltcl-9.5 | postgresql-pltcl-9.4 | postgresql-pltcl-9.3 | postgresql-pltcl-9.2 | postgresql-pltcl-9.1 | postgresql-pltcl-9.0 | postgresql-pltcl-8.4 | postgresql-pltcl-8.3, postgresql-contrib-9.6 | postgresql-contrib-9.5 | postgresql-contrib-9.4 | postgresql-contrib-9.3 | postgresql-contrib-9.2 | postgresql-contrib-9.1 | postgresql-contrib-9.0 | postgresql-contrib-8.4 | postgresql-contrib-8.3, debconf | debconf-2.0
+Depends: openjdk-8-jre-headless, postgresql-client-common, postgresql-9.6 | postgresql-9.5 | postgresql-9.4 | postgresql-9.3 | postgresql-9.2 | postgresql-9.1 | postgresql-9.0 | postgresql-8.4 | postgresql-8.3 | postgresql (>= 8.3), postgresql-pltcl | postgresql-pltcl-9.6 | postgresql-pltcl-9.5 | postgresql-pltcl-9.4 | postgresql-pltcl-9.3 | postgresql-pltcl-9.2 | postgresql-pltcl-9.1 | postgresql-pltcl-9.0 | postgresql-pltcl-8.4 | postgresql-pltcl-8.3, postgresql-contrib-9.6 | postgresql-contrib-9.5 | postgresql-contrib-9.4 | postgresql-contrib-9.3 | postgresql-contrib-9.2 | postgresql-contrib-9.1 | postgresql-contrib-9.0 | postgresql-contrib-8.4 | postgresql-contrib-8.3, debconf | debconf-2.0, lsb-base (>= 3.0-6)
 Conflicts: flexibee-client,flexibee, winstrom, winstrom-client
 Replaces: flexibee-client,flexibee, winstrom
+Recommends: autopostgresqlbackup, flexibe-server-backup
 Section: contrib/office
 Priority: optional
 Homepage: http://www.flexibee.eu/
-Description: Ekonomický systém ABRA FlexiBee
- Internetový ekonomický systém ABRA FlexiBee.
- .
- Upozornění pro uživatele Ubuntu 14.04 LTS a vyšší:
- ABRA FlexiBee k nastavení typu instalace používá nástroj 
- DebConf, který k zobrazení dotazů využívá knihovnu libgtk2-perl. 
- Tento balíček ale nemusí být ve Vašem systému dostupný a Centrum 
- softwaru pro Ubuntu kvůli tomu na konci instalace přestane 
- odpovídat. Nedojde tak k výběru typu instalace a FlexiBee poběží 
- v režimu "Lokální instalace". K dodatečnému nastavení typu 
- instalace otevřete terminál a zadejte příkaz 
- "sudo dpkg-reconfigure flexibee". 
- Instalace v terminálu tímto problémem netrpí.
+Description: Ekonomický systém ABRA FlexiBee - REST API a HTML rozhraní
+ Serverová verze Internetového ekonomického systému ABRA FlexiBee.
+
+Package: flexibee-server-backup
+Architecture: all
+Depends: flexibee-server
+Section: contrib/office
+Priority: optional
+Homepage: http://www.flexibee.eu/
+Description: Každodení zálhoa dat
+ Každý den uloží zálohu firmy do /var/lib/backup/flexibee nebo jinam dle volby

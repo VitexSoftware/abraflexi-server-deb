@@ -16,8 +16,11 @@ override_dh_install:
 	rm -rf data/usr/share/mimelnk
 	rm -rf data/usr/share/pixmaps
 	mkdir -p data/etc/avahi/services/
-	cp bonus/flexibee.service  data/etc/avahi/services/
-	cp bonus/flexibee-licensecheck  data/usr/bin/flexibee-licensecheck
+	cp server/flexibee.service  data/etc/avahi/services/
+	cp server/flexibee-licensecheck  data/usr/bin/flexibee-licensecheck
 	echo FLEXIBEE_CFG=server >> data/etc/default/flexibee
 	mv data/*	debian/flexibee-server
 
+#override_dh_clean:
+#	debconf-updatepo
+#	dh_clean

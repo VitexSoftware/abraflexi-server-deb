@@ -1,6 +1,6 @@
 # flexibee-server - deb balíček
 
-[EN] Debian Package for FlexiBee server-only deploy
+[EN] Debian Package for server-only deploy of czech accounting system FlexiBee
 
 Balíček je uzpůsoben k běhu na serveru bez závislosti na grafickém prostředí.
 Generován je z původního instalačního balíku poskytovaným společností Abra:
@@ -13,6 +13,7 @@ Kromě toho obsahuje jěště tyto dodatečné opravy a vylepšení.
   * doplněna podpora pro službu Avahi
   * doplněn nástroj pro kontrolu licence
   * opravena chyba s java-8-openjdk-amd64 accessibility
+  * speciální balík **flexibee-server-backup** pro denní zálohy do souboru
 
 Instalace
 ---------
@@ -21,8 +22,8 @@ Pro Debian či Ubuntu prosím použijte [repozitář](http://vitexsoftware.cz/re
 
     wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
-    aptitude update
-    aptitude install flexibee-server
+    apti update
+    apti install flexibee-server flexibee-server-backup
 
 
 Přihlášení
@@ -36,7 +37,7 @@ Po dokončení instalace je možné se k serveru přihlásit protokolem https na
 Problémy při instalaci
 ----------------------
 
-Pokud se při po aktualizaci z jessie na stretch objeví při pokusu o instalací balíku 
+Pokud se při po aktualizaci z Jessie na Stretch objeví při pokusu o instalací balíku 
 flexibee-server hláška: 
 
 **Není nainstována správná verze pltcl. Nainstalujte prosím balík postgresql-pltcl-9.4 resp. postgresql-pltcl
@@ -54,10 +55,75 @@ a nainstalovat je příkazem dpkg a následně dokončit instalaci FlexiBee serv
 
 
 Následující balíky již nejsou potřeba:
-  at-spi2-core dconf-gsettings-backend dconf-service glib-networking glib-networking-common glib-networking-services gsettings-desktop-schemas libasyncns0 libatk-bridge2.0-0 libatk-wrapper-java
-  libatk-wrapper-java-jni libatspi2.0-0 libcairo-gobject2 libcolord2 libdconf1 libdrm-amdgpu1 libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libegl1-mesa libepoxy0 libflac8 libfontenc1
-  libgbm1 libgif7 libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libgtk-3-0 libgtk-3-bin libgtk-3-common libice6 libjson-glib-1.0-0 libjson-glib-1.0-common libllvm3.9 libpciaccess0 libproxy1v5
-  libpulse0 librest-0.7-0 libsm6 libsndfile1 libsoup-gnome2.4-1 libsoup2.4-1 libtxc-dxtn-s2tc libvorbisenc2 libwayland-client0 libwayland-cursor0 libwayland-egl1-mesa libwayland-server0
-  libx11-xcb1 libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxft2 libxkbcommon0 libxmu6 libxpm4 libxshmfence1 libxt6 libxv1
-  libxxf86dga1 libxxf86vm1 openjdk-8-jre x11-utils
 
+
+    * at-spi2-core
+    * dconf-gsettings-backend
+    * dconf-service
+    * glib-networking
+    * glib-networking-common
+    * glib-networking-services
+    * gsettings-desktop-schemas
+    * libasyncns0
+    * libatk-bridge2.0-0
+    * libatk-wrapper-java
+    * libatk-wrapper-java-jni
+    * libatspi2.0-0
+    * libcairo-gobject2
+    * libcolord2
+    * libdconf1
+    * libdrm-amdgpu1
+    * libdrm-intel1
+    * libdrm-nouveau2
+    * libdrm-radeon1
+    * libdrm2
+    * libegl1-mesa
+    * libepoxy0
+    * libflac8
+    * libfontenc1
+    * libgbm1
+    * libgif7
+    * libgl1-mesa-dri
+    * libgl1-mesa-glx
+    * libglapi-mesa
+    * libgtk-3-0
+    * libgtk-3-bin
+    * libgtk-3-common
+    * libice6
+    * libjson-glib-1.0-0
+    * libjson-glib-1.0-common
+    * libllvm3.9
+    * libpciaccess0
+    * libproxy1v5
+    * libpulse0
+    * librest-0.7-0
+    * libsm6
+    * libsndfile1
+    * libsoup-gnome2.4-1
+    * libsoup2.4-1
+    * libtxc-dxtn-s2tc
+    * libvorbisenc2
+    * libwayland-client0
+    * libwayland-cursor0
+    * libwayland-egl1-mesa
+    * libwayland-server0
+    * libx11-xcb1
+    * libxaw7
+    * libxcb-dri2-0
+    * libxcb-dri3-0
+    * libxcb-glx0
+    * libxcb-present0
+    * libxcb-shape0
+    * libxcb-sync1
+    * libxcb-xfixes0
+    * libxft2
+    * libxkbcommon0
+    * libxmu6
+    * libxpm4
+    * libxshmfence1
+    * libxt6
+    * libxv1
+    * libxxf86dga1
+    * libxxf86vm1
+    * openjdk-8-jre
+    * x11-utils

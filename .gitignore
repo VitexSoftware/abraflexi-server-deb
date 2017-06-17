@@ -11,3 +11,6 @@ debian/md5sums
 flexibee_*
 debian/files
 /.vagrant/
+*_all.deb
+/debian/flexibee-server-backup/
+/debian/flexibee-server-backup.substvars
