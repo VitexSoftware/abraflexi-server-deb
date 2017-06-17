@@ -1,7 +1,14 @@
-# flexibee-server-deb
-Debian Package for FlexiBee server-only deploy
+# flexibee-server - deb balíček
 
-Odlehčený balíček bez GUI - pouze API server pro Debian Stretch
+[EN] Debian Package for FlexiBee server-only deploy
+
+Balíček je uzpůsoben k běhu na serveru bez závislosti na grafickém prostředí.
+Generován je z původního instalačního balíku poskytovaným společností Abra:
+https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/
+
+**Soubory .jar aplikace FlexiBee nejsou nijak modifikovány**
+
+Kromě toho obsahuje jěště tyto dodatečné opravy a vylepšení.
 
   * doplněna podpora pro službu Avahi
   * doplněn nástroj pro kontrolu licence
@@ -16,6 +23,13 @@ Pro Debian či Ubuntu prosím použijte [repozitář](http://vitexsoftware.cz/re
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
     aptitude update
     aptitude install flexibee-server
+
+
+Přihlášení
+----------
+
+Po dokončení instalace je možné se k serveru přihlásit protokolem https na portu 
+5434 - např.: https://192.168.1.32:5434/
 
 
 
