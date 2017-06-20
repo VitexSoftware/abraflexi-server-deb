@@ -21,7 +21,7 @@ Description: Ekonomický systém ABRA FlexiBee - REST API a HTML rozhraní
 
 Package: flexibee-server-backup
 Architecture: all
-Depends: flexibee-server
+Depends: flexibee-server|flexibee
 Section: contrib/office
 Priority: optional
 Homepage: http://www.flexibee.eu/
