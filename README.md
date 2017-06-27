@@ -22,8 +22,8 @@ Pro Debian či Ubuntu prosím použijte [repozitář](http://vitexsoftware.cz/re
 
     wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
-    apti update
-    apti install flexibee-server flexibee-server-backup
+    apt update
+    apt install flexibee-server flexibee-server-backup
 
 
 Přihlášení
