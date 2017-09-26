@@ -42,27 +42,27 @@ fi
 flexibee-licensecheck
 
 if [ -f /usr/bin/update-mime-database ]; then
-	/usr/bin/update-mime-database /usr/share/mime/ > /dev/null || true
+	update-mime-database /usr/share/mime/ > /dev/null || true
 fi
 
 if [ -f /usr/bin/xdg-desktop-menu ]; then
-    /usr/bin/xdg-desktop-menu install --novendor /usr/share/applications/flexibee.desktop > /dev/null || true
+    xdg-desktop-menu install --novendor /usr/share/applications/flexibee.desktop > /dev/null || true
 fi
 if [ -f /usr/bin/xdg-mime ]; then
-    /usr/bin/xdg-mime install --novendor /usr/share/mime/packages/flexibee.xml > /dev/null  || true
+    xdg-mime install --novendor /usr/share/mime/packages/flexibee.xml > /dev/null  || true
 fi
 if [ -f /usr/bin/xdg-icon-resource ]; then
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-connection.png flexibee-connection
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png flexibee-backup
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png flexibee-license
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-query.png flexibee-query
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-report.png flexibee-report
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png flexibee-xml
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-isdoc.png flexibee-isdoc
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-connection.png flexibee-connection
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png flexibee-backup
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png flexibee-license
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-query.png flexibee-query
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-report.png flexibee-report
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png flexibee-xml
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-isdoc.png flexibee-isdoc
 
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png winstrom-backup
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png winstrom-license
-    /usr/bin/xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png winstrom-xml
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-backup.png winstrom-backup
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-license.png winstrom-license
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/flexibee/flexibee-xml.png winstrom-xml
 fi
 
 INSTALL_DB=true

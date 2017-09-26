@@ -20,9 +20,9 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-#  config.push.define "atlas" do |push|
-#     push.app = "vitexsoftware/flexibee"
-#  end
+  config.push.define "atlas" do |push|
+     push.app = "vitexsoftware/flexibee"
+  end
 
    config.vm.provision "shell", inline: <<-SHELL
      apt-get update

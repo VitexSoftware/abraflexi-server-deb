@@ -1,7 +1,19 @@
+flexibee-server (2017.2.0-3) UNRELEASED; urgency=medium
+
+  [ Vítězslav Dvořák ]
+  * backup package
+  * Typo fixed
+  * 2017.2.0-3 Typo fixed
+  * 2017.2.0-3 Typo fixed
+  * Typo fixed
+
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Tue, 26 Sep 2017 13:04:47 +0200
+
 flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * Added Support for Avahi
   * Package update
+  * backup package
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Fri, 16 Jun 2017 12:40:19 +0200
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Sun, 18 Jun 2017 01:01:52 +0200
