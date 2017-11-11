@@ -1,4 +1,4 @@
-flexibee-server (2017.2.0-3) UNRELEASED; urgency=medium
+flexibee-server (2017.2.0-3.1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -6,8 +6,7 @@ flexibee-server (2017.2.0-3) UNRELEASED; urgency=medium
   * 2017.2.0-3 Typo fixed
   * 2017.2.0-3 Typo fixed
   * Typo fixed
-
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Tue, 26 Sep 2017 13:04:47 +0200
+  * Makefile added to project
 
 flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
 
@@ -16,4 +15,7 @@ flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
   * Package update
   * backup package
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Sun, 18 Jun 2017 01:01:52 +0200
+  [ Cybervitexus ]
+  * Makefile added to project
+
+ -- Cybervitexus <info@vitexsoftware.cz>  Sat, 11 Nov 2017 15:18:17 +0100

@@ -46,7 +46,7 @@ if [ -f /usr/bin/update-mime-database ]; then
 fi
 
 if [ -f /usr/bin/xdg-desktop-menu ]; then
-    xdg-desktop-menu install --novendor /usr/share/applications/flexibee.desktop > /dev/null || true
+    xdg-desktop-menu install --novendor /usr/share/applications/flexibee-server.desktop > /dev/null || true
 fi
 if [ -f /usr/bin/xdg-mime ]; then
     xdg-mime install --novendor /usr/share/mime/packages/flexibee.xml > /dev/null  || true
@@ -100,14 +100,14 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 
 		# check for cluster existance
 		EXISTING=0
-		/usr/bin/pg_lsclusters  | grep -e winstrom -e flexibee 2>/dev/null > /dev/null && EXISTING=1
+		pg_lsclusters  | grep -e winstrom -e flexibee 2>/dev/null > /dev/null && EXISTING=1
 		if [ "x$EXISTING" = "x0" ]; then
 			if [ "x$MYLANG" = "xcs" ]; then
 				echo -n "  Vytvářím novou databázi ... "
 			else
 				echo -n "  Creating new database ... "
 			fi
-			/usr/bin/pg_createcluster --port=$PG_PORT --datadir=/var/lib/flexibee --encoding=utf-8 --locale=cs_CZ.utf8 --user=$PG_USER --group=$PG_GROUP --start-conf=auto --socketdir=/var/run/postgresql/ "$DBVERSION" flexibee > /dev/null 
+			pg_createcluster --port=$PG_PORT --datadir=/var/lib/flexibee --encoding=utf-8 --locale=cs_CZ.utf8 --user=$PG_USER --group=$PG_GROUP --start-conf=auto --socketdir=/var/run/postgresql/ "$DBVERSION" flexibee > /dev/null 
 			echo "ok"
 		else 
 			if [ "x$MYLANG" = "xcs" ]; then
@@ -119,7 +119,7 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 
 	
 		if [ -f /usr/sbin/update-rc.d ]; then
-		    /usr/sbin/update-rc.d flexibee start 90 2 3 5 . stop 20 0 1 6 . > /dev/null
+		    update-rc.d flexibee start 90 2 3 5 . stop 20 0 1 6 . > /dev/null
 		fi
 
 		if [ -f /usr/share/flexibee/bin/initdb.sh ]; then

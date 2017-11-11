@@ -1,1 +1,3 @@
 backup/flexibee-server-backup etc/default
+etc/systemd/flexibee.service  lib/systemd/system
+

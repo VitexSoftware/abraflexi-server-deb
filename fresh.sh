@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PACKAGE="flexibee-server"
 LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}'`
 LATESTPKG=`basename $LATESTURL`
 
@@ -25,5 +26,6 @@ tar xzvf ../tmp/data.tar.gz
 cd ..
 
 CHANGES=`git log -n 1 | tail -n+5`
-dch -b -v $VERSION-$REVISION --package $PACKAGE $CHANGES
+dch -i $CHANGES
+
 

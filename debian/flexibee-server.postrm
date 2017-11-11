@@ -3,7 +3,7 @@
 . /usr/share/debconf/confmodule
 
 if [ -f /usr/bin/update-mime-database ]; then
-        /usr/bin/update-mime-database /usr/share/mime/ > /dev/null
+        update-mime-database /usr/share/mime/ > /dev/null
 fi
 
 set -e
@@ -15,12 +15,12 @@ if [ "$1" = remove -a -f /usr/bin/pg_lsclusters ]; then
 
 	# check for cluster existance
 	EXISTING=0
-	/usr/bin/pg_lsclusters  | grep -e winstrom -e flexibee 2>/dev/null > /dev/null && EXISTING=1
+	pg_lsclusters  | grep -e winstrom -e flexibee 2>/dev/null > /dev/null && EXISTING=1
 	if [ "x$EXISTING" = "x1" ]; then
-		DBVERSION=`/usr/bin/pg_lsclusters  | grep -e winstrom -e flexibee | cut "-d " -f 1`
-        	CLUSTERNAME=`/usr/bin/pg_lsclusters --no-head | grep $DBVERSION | sed -e"s/[ ]\+/ /g" | cut "-d " -f 2 | sed "s/[[:space:]]*//g" | head -1`
+		DBVERSION=`pg_lsclusters  | grep -e winstrom -e flexibee | cut "-d " -f 1`
+        	CLUSTERNAME=`pg_lsclusters --no-head | grep $DBVERSION | sed -e"s/[ ]\+/ /g" | cut "-d " -f 2 | sed "s/[[:space:]]*//g" | head -1`
 
-		/usr/bin/pg_ctlcluster --force $DBVERSION $CLUSTERNAME stop || true
+		pg_ctlcluster --force $DBVERSION $CLUSTERNAME stop || true
 
 		# we always ask this question
 		db_fset winstrom/remove-db seen false
@@ -35,7 +35,7 @@ if [ "$1" = remove -a -f /usr/bin/pg_lsclusters ]; then
 			else
 				echo "Removing FlexiBee database ..."
 			fi
-			/usr/bin/pg_dropcluster $DBVERSION $CLUSTERNAME --stop || true
+			pg_dropcluster $DBVERSION $CLUSTERNAME --stop || true
 		else
 			if [ "x$MYLANG" = "xcs" ]; then
 				echo "Zachovávám databázi systému FlexiBee ..."
