@@ -1,4 +1,4 @@
-flexibee-server (2017.2.0-3.2) UNRELEASED; urgency=medium
+flexibee-server (2017.2.0-4.1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -15,8 +15,4 @@ flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
   * Package update
   * backup package
 
-  [ Cybervitexus ]
-  * Makefile added to project
-  * Added SystemD support Add WebApp menu entry and icon
-
- -- Cybervitexus <info@vitexsoftware.cz>  Sat, 11 Nov 2017 15:56:14 +0100
+ -- Cybervitexus <info@vitexsoftware.cz>  Sat, 11 Nov 2017 16:39:03 +0100

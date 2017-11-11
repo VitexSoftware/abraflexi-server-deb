@@ -1,10 +1,16 @@
-<?xml version="1.0" standalone='no'?>
-<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
-<service-group>
- <name replace-wildcards="yes">FlexiBee on %h</name>
-  <service>
-   <type>_https._tcp</type>
-   <port>5434</port>
-   <txt-record>path=/</txt-record>
-  </service>
-</service-group>
+[Unit]
+Description=ABRA FlexiBee Server
+
+[Service]
+EnvironmentFile=-/etc/default/flexibee
+ExecStart=/usr/sbin/flexibee-server
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=no
+RestartPreventExitStatus=255
+Type=forking
+PIDFile=/var/run/flexibee.pid
+
+[Install]
+WantedBy=multi-user.target
+Alias=flexibee.service
