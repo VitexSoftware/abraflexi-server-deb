@@ -1,4 +1,4 @@
-flexibee-server (2017.2.0-4.1) UNRELEASED; urgency=medium
+flexibee-server (2017.2.0-4.3) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -15,4 +15,7 @@ flexibee-server (2017.1.11-1) UNRELEASED; urgency=medium
   * Package update
   * backup package
 
- -- Cybervitexus <info@vitexsoftware.cz>  Sat, 11 Nov 2017 16:39:03 +0100
+  [ Cybervitexus ]
+  * Service install fix
+
+ -- Cybervitexus <info@vitexsoftware.cz>  Sat, 11 Nov 2017 17:33:24 +0100

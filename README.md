@@ -10,10 +10,12 @@ https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-fl
 
 Kromě toho obsahuje jěště tyto dodatečné opravy a vylepšení.
 
+  * doplněna podpora systemd
   * doplněna podpora pro službu Avahi
   * doplněn nástroj pro kontrolu licence
   * opravena chyba s java-8-openjdk-amd64 accessibility
   * speciální balík **flexibee-server-backup** pro denní zálohy do souboru
+  * položka v menu a ikona pro webové rozhraní jako aplikaci
 
 Instalace
 ---------
