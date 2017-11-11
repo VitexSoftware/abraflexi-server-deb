@@ -1,3 +1,2 @@
-server/flexibee-server.desktop usr/share/applications/flexibee-server.desktop
-server/flexibee-server.png usr/share/pixmaps/flexibee-server.png
-
+server/flexibee-server.desktop usr/share/applications
+server/flexibee-server.png usr/share/pixmaps

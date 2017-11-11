@@ -3,6 +3,6 @@ Name=FlexiBee Web
 Comment="FlexiBee Web interface"
 Exec=sensible-browser https://localhost:5434
 Terminal=false
-Icon=flexibee-server
+Icon=/usr/share/pixmaps/flexibee-server.png
 Type=Application
 Categories=Office
