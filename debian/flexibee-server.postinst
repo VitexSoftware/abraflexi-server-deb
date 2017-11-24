@@ -11,7 +11,8 @@ INSTALL_DB=true
 
 # if it's not a client instalation type check for cs_CZ.utf8 locale (and exit if it's missing)
 if [ -x "/usr/bin/localectl" ]; then
-	
+	locale-gen cs_CZ.utf8; 
+        update-locale
 	FOUND=0
 	LOCALES=`localectl list-locales`
 
