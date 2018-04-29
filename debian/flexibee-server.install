@@ -1,6 +1,5 @@
-server/flexibee-licensecheck  	data/usr/bin/flexibee-licensecheck
+server/flexibee-licensecheck  	usr/bin/flexibee-licensecheck
 server/flexibee-server.desktop 	usr/share/applications
 server/flexibee-server.png 	usr/share/pixmaps
-server/avahi/flexibee.service  	data/etc/avahi/services/
+server/avahi/flexibee.service  	etc/avahi/services/
 server/flexibee.service  	lib/systemd/system/flexibee.service
-
