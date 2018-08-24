@@ -1,4 +1,4 @@
-all: fresh build install
+#all: fresh build install
 
 fresh:
 	git pull

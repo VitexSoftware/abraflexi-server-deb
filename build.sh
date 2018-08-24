@@ -2,7 +2,7 @@
 
 PACKAGE="flexibee-server"
 
-LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}'`
+LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}' | head -n 1`
 LATESTPKG=`basename $LATESTURL`
 
 wget -c $LATESTURL
@@ -28,7 +28,6 @@ cd ..
 
 CHANGES=`git log -n 1 | tail -n+5`
 dch -b -v $VERSION-$REVISION --package $PACKAGE $CHANGES
-
 
 debuild -i -us -uc -b
 

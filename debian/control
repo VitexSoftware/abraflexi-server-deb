@@ -9,7 +9,7 @@ Homepage: https://www.vitexsoftware.cz/
 
 Package: flexibee-server
 Architecture: all
-Depends: openjdk-8-jre-headless, postgresql-client-common, postgresql-9.6 | postgresql-9.5 | postgresql-9.4 | postgresql-9.3 | postgresql-9.2 | postgresql-9.1 | postgresql-9.0 | postgresql-8.4 | postgresql-8.3 | postgresql (>= 8.3), postgresql-pltcl | postgresql-pltcl-9.6 | postgresql-pltcl-9.5 | postgresql-pltcl-9.4 | postgresql-pltcl-9.3 | postgresql-pltcl-9.2 | postgresql-pltcl-9.1 | postgresql-pltcl-9.0 | postgresql-pltcl-8.4 | postgresql-pltcl-8.3, postgresql-contrib-9.6 | postgresql-contrib-9.5 | postgresql-contrib-9.4 | postgresql-contrib-9.3 | postgresql-contrib-9.2 | postgresql-contrib-9.1 | postgresql-contrib-9.0 | postgresql-contrib-8.4 | postgresql-contrib-8.3, debconf | debconf-2.0, lsb-base (>= 3.0-6), locales-all
+Depends: openjdk-7-jre-headless|openjdk-8-jre-headless|openjdk-9-jre-headless, postgresql-client-common, postgresql-9.6 | postgresql-9.5 | postgresql-9.4 | postgresql-9.3 | postgresql-9.2 | postgresql-9.1 | postgresql-9.0 | postgresql-8.4 | postgresql-8.3 | postgresql (>= 8.3), postgresql-pltcl | postgresql-pltcl-9.6 | postgresql-pltcl-9.5 | postgresql-pltcl-9.4 | postgresql-pltcl-9.3 | postgresql-pltcl-9.2 | postgresql-pltcl-9.1 | postgresql-pltcl-9.0 | postgresql-pltcl-8.4 | postgresql-pltcl-8.3, postgresql-contrib-9.6 | postgresql-contrib-9.5 | postgresql-contrib-9.4 | postgresql-contrib-9.3 | postgresql-contrib-9.2 | postgresql-contrib-9.1 | postgresql-contrib-9.0 | postgresql-contrib-8.4 | postgresql-contrib-8.3, debconf | debconf-2.0, lsb-base (>= 3.0-6), locales-all
 Conflicts: flexibee-client,flexibee, winstrom, winstrom-client
 Replaces: flexibee-client,flexibee, winstrom
 Recommends: autopostgresqlbackup, flexibe-server-backup

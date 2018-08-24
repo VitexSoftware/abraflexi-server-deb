@@ -1,5 +1,7 @@
 # flexibee-server - deb balíček
 
+![FlexiBee Server logo](https://raw.githubusercontent.com/VitexSoftware/flexibee-server-deb/master/flexibee-server.png)
+
 [EN] Debian Package for server-only deploy of czech accounting system FlexiBee
 
 Balíček je uzpůsoben k běhu na serveru bez závislosti na grafickém prostředí.
