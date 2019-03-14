@@ -2,7 +2,7 @@
 Description=ABRA FlexiBee Server
 
 [Service]
-EnvironmentFile=-/etc/default/flexibee
+EnvironmentFile=/etc/default/flexibee
 ExecStart=/usr/sbin/flexibee-server
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

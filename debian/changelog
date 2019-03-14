@@ -1,4 +1,4 @@
-flexibee-server (2018.2.4.1-5) UNRELEASED; urgency=medium
+flexibee-server (2019.2.0.2-31) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -10,5 +10,9 @@ flexibee-server (2018.2.4.1-5) UNRELEASED; urgency=medium
   * Repack
   * Dockerize
   * Dockerize
+  * Debian package dependency fix
+  * SystemD environment file fix
+  * Debian package dependency fix
+  * Debian package dependency fix
 
- -- Vítězslav Dvořák <vitex@develoid.jinonice.czf>  Fri, 24 Aug 2018 16:14:23 +0200
+ -- Vítězslav Dvořák <vitex@develoid.jinonice.czf>  Thu, 14 Mar 2019 12:56:30 +0100

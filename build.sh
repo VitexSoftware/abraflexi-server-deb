@@ -29,7 +29,7 @@ cd ..
 CHANGES=`git log -n 1 | tail -n+5`
 dch -b -v $VERSION-$REVISION --package $PACKAGE $CHANGES
 
-debuild -i -us -uc -b
+dpkg-buildpackage -i -us -uc -b
 
 rc=$?;
 if [[ $rc != 0 ]];
