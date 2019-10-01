@@ -26,6 +26,6 @@ tar xzvf ../tmp/data.tar.gz
 cd ..
 
 CHANGES=`git log -n 1 | tail -n+5`
-dch -i $CHANGES
+dch --newversion $VERSION  $CHANGES
 
 
