@@ -3,3 +3,4 @@ server/flexibee-server.desktop 	usr/share/applications
 server/flexibee-server.png 	usr/share/pixmaps
 server/avahi/flexibee.service  	etc/avahi/services/
 server/flexibee.service  	lib/systemd/system
+debian/javax.annotation-api-1.3.2.jar usr/share/flexibee/lib/
