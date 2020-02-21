@@ -3,6 +3,9 @@
 %:
 	dh $@
 
+override_dh_auto_clean:
+	dh_auto_clean
+
 override_dh_build:
 	dh_build
 
@@ -16,8 +19,10 @@ override_dh_install:
 	rm -rf data/usr/share/pixmaps
 	rm -rf data/etc/apt/sources.list.d/flexibee.list
 	echo FLEXIBEE_CFG=server >> data/etc/default/flexibee
+	mkdir -p debian/flexibee-server
 	mv data/*	debian/flexibee-server
 	dh_install
+	cp -f server/flexibee-server debian/flexibee-server/usr/sbin
 
 #override_dh_clean:
 #	debconf-updatepo

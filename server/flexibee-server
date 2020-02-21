@@ -1,0 +1,302 @@
+#!/bin/bash
+
+# DEBUG=1
+FLEXIBEE_USER="winstrom"
+FLEXIBEE_ARGS=""
+FLEXIBEE_JAVA_ARGS=""
+FLEXIBEE_SERVER_ARGS=""
+FLEXIBEE_SERVER_JAVA_ARGS="-Xmx400m -server -Djava.awt.headless=true -XX:-OmitStackTraceInFastThrow -XX:MaxPermSize=128m -XX:+IgnoreUnrecognizedVMOptions"
+FLEXIBEE_PID=/run/flexibee.pid
+
+ulimit -c unlimited
+
+# Support for Multiple Servers on one machine (virtuals)
+FLEXIBEE_VIRTUALS="default"
+
+_debug() {
+	if [ -n "${DEBUG}" ]
+	then
+		echo "DEBUG:   $1" >&2 
+		shift
+		for text in "$@"
+		do
+			echo "         ${text}" >&2
+		done
+	fi
+}
+
+_error() {
+	echo "ERROR:   $1" >&2
+	shift
+	for text in "$@"
+	do
+		echo "         ${text}" >&2
+	done
+}
+
+findjava() {
+	# We try hard to find the proper 'java' command
+	if [ -n "${FLEXIBEE_JAVA}" ] && [ -x "${FLEXIBEE_JAVA}" ]
+        then
+		JAVACMD="${FLEXIBEE_JAVA}"
+		_debug "Using \$FLEXIBEE_JAVA to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-8-oracle/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-8-oracle/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-8-oracle/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-7-oracle/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-7-oracle/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-7-oracle/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-9-oracle/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-9-oracle/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-9-oracle/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java ]
+		then
+		JAVACMD='/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-7-icedtea/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-7-icedtea/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-7-icedtea/jre/bin/java to find java virtual machine."
+	elif [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+	then
+		_debug "Using \$JAVACMD to find java virtual machine."
+	elif [ -n "${JAVA_BINDIR}" ] && [ -x "${JAVA_BINDIR}/java" ]
+	then
+		JAVACMD="${JAVA_BINDIR}/java"
+		_debug "Using \$JAVA_BINDIR to find java virtual machine."
+	elif [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ]
+	then
+		JAVACMD="${JAVA_HOME}/bin/java"
+		_debug "Using \$JAVA_HOME to find java virtual machine."
+	else
+		JAVACMD=$(which java)
+		if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+		then
+			_debug "Using \$PATH to find java virtual machine."
+		elif [ -x /usr/bin/java ]
+		then
+			_debug "Using /usr/bin/java to find java virtual machine."
+			JAVACMD=/usr/bin/java
+		fi
+	fi
+
+	# if we were successful, we return 0 else we complain and return 1
+	if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+	then
+		_debug "Using '$JAVACMD' as java virtual machine..."
+		return 0
+	else
+		_error "Couldn't find a java virtual machine," \
+		       "define JAVACMD, JAVA_BINDIR, JAVA_HOME or PATH."
+		return 1
+	fi
+}
+_source() {
+	if [ -f "$1" ]
+	then
+		_debug "Sourcing '$1'."
+		. "$1"
+	fi
+}
+
+# Fix for Stupid Debian settings in /etc/sysctl.d/bindipv6only.conf
+if [ -f /proc/sys/net/ipv6/bindv6only ]; then
+    if [ x"`cat /proc/sys/net/ipv6/bindv6only`" = x"1" ]; then 
+	FLEXIBEE_SERVER_JAVA_ARGS="${FLEXIBEE_SERVER_JAVA_ARGS} -Djava.net.preferIPv4Stack=true"
+	echo "Disabling IPv6 support in FlexiBee due to the System settings"
+    fi
+fi
+
+if [ -f /etc/default/flexibee ]; then
+	. /etc/default/flexibee
+fi
+
+
+findjava
+if [ $? -ne 0 ]
+then
+	exit 1
+fi
+
+winstrompath=$(dirname "$0")
+cd $winstrompath;		    # we need to resolve relative paths
+winstrompath=$(pwd)
+winstrompath="${winstrompath%/sbin}" # nothing happens if winstrom is not installed
+	                            # under something/sbin
+
+
+# we try different possibilities to find winstrom jars
+for jar in "${winstrompath}" "${winstrompath}/share/flexibee" "${winstrompath}/flexibee" "/usr/share/flexibee" "${winstrompath}/share/winstrom" "${winstrompath}/winstrom" "/usr/share/winstrom"
+do
+	for i in ${jar}/lib/winstrom-*.jar; do
+		if [ -f $i ]; then
+			winstromdir="${jar}"
+			_debug "FlexiBee Directory is '${jar}'."
+			break
+		fi
+	done
+
+	if [ ! -z "${winstromdir}" ]; then
+		break
+	fi
+done
+
+if [ -z "${winstromdir}" ]
+then
+	_error "Couldn't find flexibee under '${winstromdir}'."
+	exit 1
+fi
+
+_debug "FlexiBee Directory is '${winstromdir}'."
+
+# Go to safe directory, ...
+if [ x"$TEMP" != x"" ]; then
+    cd $TEMP
+else
+    cd /tmp
+fi
+
+if [ -f /usr/share/flexibee/bin/functions ]; then
+    . /usr/share/flexibee/bin/functions
+fi
+
+
+# Target result
+RESULT_STATUS=0
+APP_COUNTER=1
+
+for virtual in $FLEXIBEE_VIRTUALS; do 
+    PID_FILE=$FLEXIBEE_PID
+
+    if [ x"$virtual" = x"default" ]; then
+        SUFFIX=""
+    else
+        SUFFIX="-$virtual"
+        if [ $APP_COUNTER -gt 1 ]; then
+	      PID_FILE=${PID_FILE}${SUFFIX}
+	    fi
+    fi
+
+    APP_COUNTER=$((APP_COUNTER+1))
+
+    _debug "Running virtual $virtual"
+
+    # detect Configuration
+    CFG=""
+    if [ -f /etc/flexibee/flexibee-server$SUFFIX.xml ]; then
+        CFG="/etc/flexibee/flexibee-server$SUFFIX.xml"
+    else 
+        if [ -f /Library/Application\ Support/FlexiBee/Default/flexibee-server$SUFFIX.xml ]; then
+            CFG="/Library/Application\ Support/FlexiBee/Default/flexibee-server$SUFFIX.xml"
+        fi
+    fi
+
+    WinStrom_detectRunning "$SUFFIX"
+
+    if [ x$RUNNING = x0 ]; then
+
+    # Create temporary file for error message and status of WinStrom
+    if [ -x /bin/tempfile ]; then
+        TEMPFILE=`/bin/tempfile --directory=/var/run/ --prefix=flexibee --suffix=.pipe`
+    else
+        TEMPFILE=/var/run/flexibee$SUFFIX-$RANDOM.pipe
+    fi
+
+    _trap() {
+        _debug "Got TRAP. Killing $PID."
+        rm -f $TEMPFILE 2>/dev/null >/dev/null || true
+        # Mandriva service status detection
+        if [ -d /var/lock/subsys/ -a -f /var/lock/subsys/flexibee$SUFFIX ]; then
+            rm -f /var/lock/subsys/flexibee$SUFFIX 2>/dev/null >/dev/null || true
+	fi
+        kill -TERM $PID || true
+    }
+
+    trap _trap TERM INT
+
+    OUTPUT=""
+    LOGFILE=/var/log/flexibee$SUFFIX.log
+    if [ -f $LOGFILE -a -w $LOGFILE ]; then
+	touch $LOGFILE && OUTPUT="2>> $LOGFILE"
+    fi
+
+    # 'tempfile' creates the temp file.
+    if [ -f $TEMPFILE ]; then
+        rm $TEMPFILE
+    fi
+    mkfifo $TEMPFILE
+
+
+    # Every virtual can run different version of the product
+    if [ -f /etc/flexibee/virtuals/${virtual}/lib/server.txt ]; then
+	export FLEXIBEE_DIR=/etc/flexibee/virtuals/${virtual}
+	export FLEXIBEE_LIB_DIR=${FLEXIBEE_DIR}/lib
+    else 
+	export FLEXIBEE_DIR="${winstromdir}"
+	unset FLEXIBEE_LIB_DIR
+    fi
+    # The CLASSPATH also lets one specify additional jars, which is good, if
+    # you want to add a new Look&Feel jar (the motif one is so ugly...).
+    export MYCLASSPATH="${ADD_JARS}:${CLASSPATH}:/usr/share/flexibee/lib/javax.annotation-api-1.3.2.jar"
+    
+    # remove potential extra separator from start
+    MYCLASSPATH=${MYCLASSPATH#:}
+    
+    for i in `cat ${FLEXIBEE_DIR}/lib/server.txt`; do
+    	MYCLASSPATH="${FLEXIBEE_DIR}/lib/${i}:${MYCLASSPATH}"
+    done
+    
+    # remove potential extra separator from end
+    MYCLASSPATH=${MYCLASSPATH%:}
+
+    _debug "ClassPath for $virtual is '$MYCLASSPATH'."
+
+    SERVER_JAVA_ARGS="$FLEXIBEE_SERVER_JAVA_ARGS"
+    [[ "$virtual" == *"-jdbc" && -n "$FLEXIBEE_SERVER_JDBC_ARGS" ]] && SERVER_JAVA_ARGS="$FLEXIBEE_SERVER_JDBC_ARGS" || true
+
+    # podpora pro JMX (jen v cloudu)
+    if [ -n "$SUFFIX" ]; then
+        JMX_PORT=`xmlstarlet sel -t -v "/properties/entry[@key='jmx.port']" $CFG 2>/dev/null`
+        # xmlstarlet vraci 0 pokud neco nasel, jinak 1. Pokud neni na PATH, system vraci 127 (command not found)
+        if [ $? -eq 0 ]; then
+            JMX_OPT="-Dcom.sun.management.jmxremote"
+            SERVER_JAVA_ARGS="${SERVER_JAVA_ARGS} ${JMX_OPT}.port=${JMX_PORT} ${JMX_OPT}.authenticate=false ${JMX_OPT}.ssl=false ${JMX_OPT}.local.only=true"
+        fi
+    fi
+
+    #(
+    #    flock -xn 9 || exit 0
+
+        # Run it in background
+        ${JAVACMD} -Dvirtual=$virtual -cp $MYCLASSPATH $SERVER_JAVA_ARGS cz.winstrom.net.server.WinStromServer -c $CFG --daemon $FLEXIBEE_SERVER_ARGS $@ 2>>$LOGFILE >$TEMPFILE &
+        PID=$!
+        _debug "FlexiBee PID is $PID"
+
+        # FlexiBee writes to output the error code or string 'OK' and closes output. This will release the following 'cat' command.
+        RESULT=`cat $TEMPFILE`
+        # Remove the pipe
+        rm -f $TEMPFILE 2>/dev/null >/dev/null || true
+
+        _debug "RESULT: \'$RESULT\'"
+
+        if [ x"`echo $RESULT | tail -c3`" != x"OK" ]; then
+            echo $RESULT
+            wait $PID
+            exit $?
+        else
+            echo $PID > $PID_FILE
+
+	    # Mandriva service status detection
+	    if [ -d /var/lock/subsys/ ]; then
+		echo > /var/lock/subsys/flexibee$SUFFIX 
+	    fi
+	fi
+
+    #) 9> /var/lock/flexibee-$virtual || RESULT_STATUS=$?
+    fi
+done
+
+exit $RESULT_STATUS

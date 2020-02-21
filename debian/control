@@ -8,7 +8,7 @@ Homepage: https://github.com/VitexSoftware/flexibee-server-deb
 
 Package: flexibee-server
 Architecture: all
-Depends: openjdk-8-jre-headless|oracle-java8-jre|openjdk-9-jre-headless|oracle-java9-jre, postgresql-client-common, postgresql-9.6 | postgresql-9.5 | postgresql-9.4 | postgresql-9.3 | postgresql-9.2 | postgresql-9.1 | postgresql-9.0 | postgresql-10.0 | postgresql (>= 9.2), postgresql-pltcl | postgresql-pltcl-9.6 | postgresql-pltcl-9.5 | postgresql-pltcl-9.4 | postgresql-pltcl-9.3 | postgresql-pltcl-10.0 | postgresql-pltcl-9.0 | postgresql-contrib-10.0 |postgresql-contrib-9.6 | postgresql-contrib-9.5 | postgresql-contrib-9.4 | postgresql-contrib-9.3 | postgresql-contrib-9.2 | postgresql-contrib-9.1 | postgresql-contrib-9.0 |  debconf | debconf-2.0, lsb-base (>= 3.0-6), locales-all,debconf
+Depends: openjdk-11-jre-headless|oracle-java11-jre, postgresql-client-common, postgresql, postgresql-pltcl, postgresql-contrib, lsb-base, locales-all,debconf
 Conflicts: flexibee-client,flexibee, winstrom, winstrom-client
 Replaces: flexibee-client,flexibee, winstrom
 Recommends: autopostgresqlbackup, flexibe-server-backup, flexibee-server-systemd

@@ -1,5 +1,5 @@
 debian/flexibee-server
-tmp
+orig
 nbproject
 debian/debhelper-build-stamp
 debian/flexibee-server.debhelper.log

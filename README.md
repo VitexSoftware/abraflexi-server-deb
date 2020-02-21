@@ -24,8 +24,8 @@ Instalace
 
 Pro Debian či Ubuntu prosím použijte [repozitář](http://vitexsoftware.cz/repos.php):
 
-    wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
-    echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
+    wget -O - http://repo.vitexsoftware.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
+    echo deb http://repo.vitexsoftware.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
     apt update
     apt install flexibee-server flexibee-server-backup
 
@@ -36,26 +36,6 @@ Přihlášení
 Po dokončení instalace je možné se k serveru přihlásit protokolem https na portu 
 5434 - např.: https://192.168.1.32:5434/
 
-
-
-Problémy při instalaci
-----------------------
-
-Pokud se při po aktualizaci z Jessie na Stretch objeví při pokusu o instalací balíku 
-flexibee-server hláška: 
-
-**Není nainstována správná verze pltcl. Nainstalujte prosím balík postgresql-pltcl-9.4 resp. postgresql-pltcl
-dpkg: chyba při zpracovávání balíku flexibee-server (--configure):**
-
-bude pořeba stahnout tyto dva blaíky:
-
-    wget http://security.debian.org/debian-security/pool/updates/main/p/postgresql-9.4/postgresql-9.4_9.4.12-0+deb8u1_amd64.deb
-    wget http://security.debian.org/debian-security/pool/updates/main/p/postgresql-9.4/postgresql-pltcl-9.4_9.4.12-0+deb8u1_amd64.deb
-
-a nainstalovat je příkazem dpkg a následně dokončit instalaci FlexiBee serveru:
-
-    dpkg -i postgresql-9.4_9.4.12-0+deb8u1_amd64.deb postgresql-pltcl-9.4_9.4.12-0+deb8u1_amd64.deb
-    apt-get -f install
 
 
 Následující balíky již nejsou potřeba:

@@ -18,7 +18,7 @@ if [ -x "/usr/bin/localectl" ]; then
 
 	for LOC in $LOCALES; do
         	LOC_LOWER=$(echo "$LOC" | tr '[:upper:]' '[:lower:]')
-        	if [ "$LOC_LOWER" = "cs_cz.utf8" ]; then
+        	if [ "$LOC_LOWER" = "cs_cz.utf-8" ]; then
                 	FOUND=1
         	fi
 	done
@@ -35,9 +35,9 @@ if [ -x "/usr/bin/localectl" ]; then
 	
 fi
 
-if [ -f /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/accessibility.properties ]
+if [ -f /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties ]
 then
-    sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/accessibility.properties
+    sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties
 fi
 
 flexibee-licensecheck
@@ -73,9 +73,9 @@ CLIENT_TYPE=client
 # check if PostgreSQL cluster is installed.
 if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then 
 
-	DBVERSION=8.2
+	DBVERSION=11
 	PATHPGSQL="/usr/lib/postgresql/"
-	SUPPORTEDVERSIONS=( "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" "8.4" "8.3" "8.2" )
+	SUPPORTEDVERSIONS=( "11" "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" )
 	for ver in "${SUPPORTEDVERSIONS[@]}"
 	do
 		if [ -d $PATHPGSQL$ver ]; then 
@@ -118,11 +118,9 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 			fi
 		fi
 
-	
-		if [ -f /usr/sbin/update-rc.d ]; then
-		    update-rc.d flexibee start 90 2 3 5 . stop 20 0 1 6 . > /dev/null
-		fi
 
+		systemctl enable flexibee
+	
 		if [ -f /usr/share/flexibee/bin/initdb.sh ]; then
 			/usr/share/flexibee/bin/initdb.sh || exit 1
 		fi
@@ -130,23 +128,7 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/flexibee ]; then
 	fi
 fi
 
-service flexibee start || exit 1
-
-# the keyring in /var that gets fetched by apt-key net-update
-# if it does not yet exist, copy it to avoid uneeded net copy
-KEYRINGDIR="/var/lib/apt/keyrings"
-KEYRING="${KEYRINGDIR}/flexibee.gpg"
-
-if ! test -d $KEYRINGDIR; then
-     mkdir -m 755 -p $KEYRINGDIR
-fi
-
-if ! test -f $KEYRING; then
-     cp /usr/share/flexibee/flexibee.gpg $KEYRING
-     touch $KEYRING
-     apt-key add $KEYRING
-fi
-
+systemctl start flexibee || exit 1
 
 db_stop
 

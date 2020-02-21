@@ -9,7 +9,7 @@ KillMode=process
 Restart=no
 RestartPreventExitStatus=255
 Type=forking
-PIDFile=/var/run/flexibee.pid
+PIDFile=/run/flexibee.pid
 
 [Install]
 WantedBy=multi-user.target

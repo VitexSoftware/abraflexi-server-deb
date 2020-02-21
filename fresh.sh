@@ -4,25 +4,27 @@ PACKAGE="flexibee-server"
 LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}' | head -n 1`
 LATESTPKG=`basename $LATESTURL`
 
-wget -c $LATESTURL
 
 VERSION=`echo $LATESTPKG | awk -F_ '{print $2}'`
 REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
 
-echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION-$REVISION 
+echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 
-rm -rf tmp debian/data data
+wget -c $LATESTURL -O orig/flexibee_${VERSION}_all.deb
 
-mkdir tmp
-cd tmp
-ar -x ../flexibee_${VERSION}_all.deb
+
+rm -rf debian/data data
+
+mkdir -p orig
+cd orig
+ar -x flexibee_${VERSION}_all.deb
 cd ..
 #cd debian
-#tar xzvf ../tmp/control.tar.gz
+#tar xzvf ../orig/control.tar.gz
 #cd ..
 mkdir data
 cd data
-tar xzvf ../tmp/data.tar.gz
+tar xzvf ../orig/data.tar.gz
 cd ..
 
 CHANGES=`git log -n 1 | tail -n+5`
