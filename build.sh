@@ -8,9 +8,9 @@ LATESTPKG=`basename $LATESTURL`
 wget -c $LATESTURL
 
 VERSION=`echo $LATESTPKG | awk -F_ '{print $2}'`
-REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
+#REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
 
-echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION-$REVISION 
+echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 
 rm -rf tmp debian/data data
 
@@ -27,7 +27,7 @@ tar xzvf ../tmp/data.tar.gz
 cd ..
 
 CHANGES=`git log -n 1 | tail -n+5`
-dch -b -v $VERSION-$REVISION --package $PACKAGE $CHANGES
+dch -b -v $VERSION --package $PACKAGE $CHANGES
 
 dpkg-buildpackage -i -us -uc -b
 
@@ -39,8 +39,5 @@ then
 fi
 rm -rf data
 
-echo $VERSION > debian/lastversion
-echo $REVISION > debian/revision
-
-echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION-$REVISION done
+echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION done
 

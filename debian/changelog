@@ -1,4 +1,4 @@
-flexibee-server (2019.3.0) UNRELEASED; urgency=medium
+flexibee-server (2020.1.0.8) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -40,5 +40,14 @@ flexibee-server (2019.3.0) UNRELEASED; urgency=medium
     removed
   * SystemD enviroment file path fix FlexiBee original Deb Sources
     removed
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
+  * Use upstream version number
 
- -- vitex <vitex@hosting.vitexsoftware.cz>  Mon, 30 Sep 2019 17:30:52 +0200
+ -- vitex <vitex@hosting.vitexsoftware.cz>  Sun, 01 Mar 2020 12:08:50 +0100
