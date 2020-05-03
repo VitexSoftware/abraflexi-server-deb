@@ -23,6 +23,8 @@ override_dh_install:
 	mv data/*	debian/flexibee-server
 	dh_install
 	cp -f server/flexibee-server debian/flexibee-server/usr/sbin
+	cp debian/jaxb-api-2.3.0.jar debian/flexibee-server/usr/share/flexibee/lib/jaxb-api-2.3.0.jar
+	sed -i 's/\/var\/run\/flexibee\.pid/\/run\/flexibee\.pid/g'  debian/flexibee-server/etc/init.d/flexibee
 
 #override_dh_clean:
 #	debconf-updatepo
