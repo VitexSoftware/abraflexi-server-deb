@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ -x /bin/nice ]; then
+    NICE=/bin/nice
+else 
+    NICE=/usr/bin/nice
+fi
+
+
+if [ x"${1}" = x"--flexibee-pg-version" ]; then
+    if [ x"${2}" != x ]; then
+    	VERSION="${2}"
+    fi
+    shift
+    shift
+
+    $NICE /usr/lib/postgresql/$VERSION/bin/pg_dump "$@"
+    exit
+fi
+
+
+CLUSTERARG=""
+CLUSTERSUFFIX=""
+
+if [ "${1}"x = "--virtual"x ]; then
+    if [ "${2}"x != "default"x ]; then
+	CLUSTERSUFFIX=-"${2}"
+    fi
+    shift
+    shift
+fi
+
+if [ -f /usr/bin/pg_lsclusters ]; then
+    EXISTING=0
+    # check for cluster existance
+    CLUSTERNAME=flexibee$CLUSTERSUFFIX
+    /usr/bin/pg_lsclusters  | grep "$CLUSTERNAME" 2>/dev/null > /dev/null && EXISTING=1
+    if [ "x$EXISTING" = "x0" ]; then
+
+	# check for old name
+	CLUSTERNAME=winstrom$CLUSTERSUFFIX
+	/usr/bin/pg_lsclusters  | grep "$CLUSTERNAME" 2>/dev/null > /dev/null && EXISTING=1
+	if [ "x$EXISTING" = "x0" ]; then
+    	    CLUSTERNAME=`/usr/bin/pg_lsclusters --no-head | grep 8.3 | head -n 1 | cut -c 9-18`
+	fi
+    fi
+
+    if [ "x$CLUSTERNAME" != "x" ]; then 
+      # In case the cluster already existed, we need to fetch it's real PostgreSQL version
+      DBVERSION=`/usr/bin/pg_lsclusters | grep $CLUSTERNAME | head -n 1 | cut "-d " -f 1`
+      CLUSTERARG="--cluster $DBVERSION/$CLUSTERNAME"
+    fi
+
+fi
+
+$NICE pg_dump $CLUSTERARG "$@"

@@ -13,7 +13,7 @@ echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 wget -c $LATESTURL -O orig/flexibee_${VERSION}_all.deb
 
 
-rm -rf debian/data data
+rm -rf debian/tmp data
 
 mkdir -p orig
 cd orig
@@ -22,10 +22,10 @@ cd ..
 #cd debian
 #tar xzvf ../orig/control.tar.gz
 #cd ..
-mkdir data
-cd data
-tar xzvf ../orig/data.tar.gz
-cd ..
+mkdir debian/tmp
+cd debian/tmp
+tar xzvf ../../orig/data.tar.gz
+cd ../..
 
 CHANGES=`git log -n 1 | tail -n+5`
 dch --newversion $VERSION  $CHANGES

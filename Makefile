@@ -1,26 +1,19 @@
-#all: fresh build install
+all:
 
-fresh:
-	git pull
-	./fresh.sh
+dimage: deb
+	docker build -t vitexsoftware/abraflexi-server .
 
-install: 
-	echo install
-	
-build:
-	echo build
+drun: dimage
+	docker run  -dit --name AbraFlexiServer -p 8080:80 vitexsoftware/abraflexi-server
+	sensible-browser https://127.0.0.1:5434/login-logout/first-user-form
 
-clean:
-	rm -rf debian/flexibee-server debian/flexibee-server-backup
-	rm -rf debian/*.substvars debian/*.log debian/*.debhelper debian/files debian/debhelper-build-stamp debian/changelog.dch
-	rm -rf tmp/* *.deb
-	rm -f package.box
 
-image:
-	docker build -t vitexsoftware/flexibee-server .
+vagrant: deb
+	vagrant destroy -f
+	vagrant up
+	sensible-browser https://127.0.0.1:5434/login-logout/first-user-form
 
 deb:
 	debuild -i -us -uc -b
+	mv ../abraflexi-server_*_all.deb .
 
-.PHONY : install
-	

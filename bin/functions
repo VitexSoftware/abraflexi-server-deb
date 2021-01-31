@@ -1,0 +1,268 @@
+#!/bin/bash
+
+_debug() {
+        if [ -n "${DEBUG}" ]
+        then
+                echo "DEBUG:   $1" >&2
+                shift
+                for text in "$@"
+                do
+                        echo "         ${text}" >&2
+                done
+        fi
+}
+
+_quit() {
+    echo $@
+    exit 1
+}
+
+WinStrom_detectPostgresql() {
+    # Default values
+    PG_USER=postgres
+    PG_GROUP=postgres
+    PG_PORT=5434
+    CLUSTERARG=""
+    IS_ENABLED_COMMAND="systemctl -q is-enabled"
+    SYSCTL_DEFAULT_PG_ENABLED=0
+
+    if [ -x `which systemctl` ] && [ -x `which service` ]; then
+        HAS_SYSTEMCTL=1
+        $IS_ENABLED_COMMAND postgresql 2> /dev/null && SYSCTL_DEFAULT_PG_ENABLED=1
+    else
+        HAS_SYSTEMCTL=0
+    fi
+
+    # Detect PostgreSQL version.
+    DBVERSION=0
+    DBVERSION_ENABLED=0
+    PATH1="/usr/lib/postgresql/"
+    PATH2="/usr/pgsql-"
+    SUPPORTEDVERSIONS=( "10" "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" "8.4" "8.3" "8.2" )
+    for ver in "${SUPPORTEDVERSIONS[@]}"
+    do
+        if [ -d $PATH1$ver -o -d $PATH2$ver ]; then 
+            [[ "$DBVERSION" = "0" ]] && DBVERSION=$ver
+
+            # systemd: check if the service for this version is enabled
+            if [ "$HAS_SYSTEMCTL" = "1" ] && [ "$SYSCTL_DEFAULT_PG_ENABLED" = "0" ]; then
+                if $IS_ENABLED_COMMAND postgresql-${ver} 2> /dev/null; then
+                    DBVERSION_ENABLED=$ver
+                    break;
+                fi
+            else
+	            break;
+            fi
+        fi
+    done
+    
+    if [ $DBVERSION == 0 ]; then
+    	   # Fallback to psql - it can be a problem when used with clusters (ie can have multiple versions installed at once).
+	   DBVERSION=`psql --version | head -n 1 | sed -e"s/[ ]\+/ /g" | cut "-d " -f 3 | cut -d. -f 1-2`
+	   FIRSTNUMBER=${DBVERSION%.*}
+	   if [ $FIRSTNUMBER -ge 10 ]; then
+	        DBVERSION=$FIRSTNUMBER # since psql-10 has major version only one number
+	   fi
+    fi
+
+    DBVERSION_SHORT="${DBVERSION//.}"
+
+    PG_SERVICE="service postgresql"
+
+    if [ -f "/etc/init.d/postgresql" ]; then
+        PG_SERVICE="/etc/init.d/postgresql"
+    elif [ -f "/etc/init.d/postgresql-$DBVERSION" ]; then
+        PG_SERVICE="/etc/init.d/postgresql-$DBVERSION"
+    elif [ "$HAS_SYSTEMCTL" = "1" ]; then
+        # 1. service postgresql is enabled
+        if [ "$SYSCTL_DEFAULT_PG_ENABLED" = "1" ]; then
+            PG_SERVICE="service postgresql"
+        # 2. service for detected version is enabled
+        elif [ "$DBVERSION_ENABLED" != "0" ]; then
+            PG_SERVICE="service postgresql-${DBVERSION_ENABLED}"
+        # 3. try to enable service for detected version
+        elif systemctl enable postgresql-${DBVERSION} 2> /dev/null; then
+            PG_SERVICE="service postgresql-${DBVERSION}"
+        # 4. try to enable default service
+        elif systemctl enable postgresql 2> /dev/null; then
+            PG_SERVICE="service postgresql"
+        fi
+    fi
+
+    # Detect Cluster support (Debian/Ubuntu specific)
+    HAS_CLUSTERS=0
+    if [ -f /usr/bin/pg_lsclusters ]; then
+        HAS_CLUSTERS=1
+    fi
+
+    # check if PostgreSQL is running or start it
+    if [ "x$HAS_CLUSTERS" = "x1" ]; then
+        # check for cluster existence
+        CLUSTERNAME=abraflexi
+        EXISTING=0
+
+        # filter for cases with multiple instances of ABRA Flexi PostgreSQL (we are using the online one)
+        CMD="grep online"
+
+        # look for online instance
+        /usr/bin/pg_lsclusters  | grep -e winstrom -e abraflexi &> /dev/null | $CMD &> /dev/null && EXISTING=1
+        if [ "x$EXISTING" = "x1" ]; then
+
+            # it is running with the old name? (only online)
+            /usr/bin/pg_lsclusters  | grep -e winstrom &> /dev/null | $CMD &> /dev/null && CLUSTERNAME=winstrom
+        else
+            CMD="cat"
+            
+            /usr/bin/pg_lsclusters  | grep -e winstrom -e abraflexi &> /dev/null && EXISTING=1
+            if [ "x$EXISTING" = "x1" ]; then
+                # it is running with the old name?
+                /usr/bin/pg_lsclusters  | grep -e winstrom &> /dev/null && CLUSTERNAME=winstrom
+    	    else
+                CLUSTERNAME=`/usr/bin/pg_lsclusters --no-head | grep $DBVERSION | head -n 1 | sed -e"s/[ ]\+/ /g" | cut "-d " -f 2 | head -1`
+            fi
+        fi
+
+        RUNNING=0
+        # Is Cluster running
+        /usr/bin/pg_lsclusters | grep $CLUSTERNAME | $CMD | grep online &> /dev/null && RUNNING=1
+
+        # In case the cluster already existed, we need to fetch it's real PostgreSQL version
+        DBVERSION=`/usr/bin/pg_lsclusters  | grep $CLUSTERNAME | $CMD | sed -e"s/[ ]\+/ /g" | cut "-d " -f 1 | sed "s/[[:space:]]*//g" | head -1`
+        PG_PORT=`/usr/bin/pg_lsclusters  | grep $CLUSTERNAME | $CMD | sed -e"s/[ ]\+/ /g" | cut "-d " -f 3 | sed "s/[[:space:]]*//g" | head -1`
+
+        CLUSTERARG="--cluster $DBVERSION/$CLUSTERNAME"
+        CONFIGFILE=/etc/postgresql/$DBVERSION/$CLUSTERNAME/postgresql.conf
+        PG_HBA_FILE=/etc/postgresql/$DBVERSION/$CLUSTERNAME/pg_hba.conf
+    
+        _debug "Found cluster $CLUSTERARG"
+
+        PG_SERVICE_NOT_CLUSTER=$PG_SERVICE
+        PG_SERVICE="/usr/bin/pg_ctlcluster $DBVERSION $CLUSTERNAME "
+
+    else
+        # Normal PostgreSQL version
+        RUNNING=0
+        CREATED=0
+        NEED_RESTART=0
+
+        $PG_SERVICE status  2> /dev/null > /dev/null && RUNNING=1
+
+    	if [ "x$RUNNING" = "x1" ]; then
+    	    # Hack for Mandriva - it returns always 1
+            $PG_SERVICE status | grep -E "(stopped|zastaven)" > /dev/null && RUNNING=0
+        fi
+
+        if [ "x$RUNNING" = "x0" ]; then
+            # On some distribution (SUSE) PostgreSQL creates its configuration during first start
+            $PG_SERVICE start && RUNNING=1 || true
+        fi
+
+        if [ "x$RUNNING" = "x0" -a \( -f /etc/init.d/postgresql -o -f /etc/init.d/postgresql-$DBVERSION \) ]; then
+            # On some distribution (Fedora, ...) PostgreSQL is not initialized after installation. We must call '/etc/init.d/postgresql initdb'
+            HAS_INITDB=0
+            $PG_SERVICE --help | grep initdb > /dev/null && HAS_INITDB=1
+
+            if [ -d /var/lib/pgsql/data ]; then        
+                if [ ! -f /var/lib/pgsql/data/PG_VERSION ]; then
+                    if [ "x$HAS_INITDB" = "x1" ]; then
+                        $PG_SERVICE initdb || _quit "Can't initialize PostgreSQL"
+                        CREATED=1
+                    else
+                        $PG_SERVICE start || _quit "Can't initialize PostgreSQL"
+                        RUNNING=1
+                    fi
+                fi
+            fi
+            if [ -d /var/lib/pgsql/$DBVERSION/data ]; then
+                if [ ! -f /var/lib/pgsql/$DBVERSION/data/PG_VERSION ]; then
+                    if [ "x$HAS_INITDB" = "x1" ]; then
+                        $PG_SERVICE initdb || _quit "Can't initialize PostgreSQL"
+                        CREATED=1
+                    else
+                        $PG_SERVICE start || _quit "Can't initialize PostgreSQL"
+                        RUNNING=1
+                    fi
+                fi
+            fi
+        fi
+
+        # Fedora 16 (and possibly others?) has special script for initdb, can't do it with "service postgresql"
+        if [ "x$RUNNING" = "x0" -a \( -f /usr/bin/postgresql-setup -o -f /usr/pgsql-${DBVERSION}/bin/postgresql${DBVERSION_SHORT}-setup -o -f /usr/pgsql-${DBVERSION}/bin/postgresql-${DBVERSION_SHORT}-setup \) ]; then
+            if [ ! -f /var/lib/pgsql/data/PG_VERSION -a ! -f /var/lib/pgsql/${DBVERSION}/data/PG_VERSION ]; then
+                if [ -f /usr/bin/postgresql-setup ]; then
+                  INITCMD="/usr/bin/postgresql-setup" || _quit "Can't initialize PostgreSQL"
+                elif [ -f /usr/pgsql-${DBVERSION}/bin/postgresql${DBVERSION_SHORT}-setup ]; then
+                  INITCMD="/usr/pgsql-${DBVERSION}/bin/postgresql${DBVERSION_SHORT}-setup"
+                else
+                  INITCMD="/usr/pgsql-${DBVERSION}/bin/postgresql-${DBVERSION_SHORT}-setup"
+                fi
+
+                $INITCMD initdb || _quit "Can't initialize PostgreSQL"
+                CREATED=1
+            fi
+        fi
+
+        if [ "$RUNNING" = "0" ] && [ "$CREATED" = "1" ]; then
+            $PG_SERVICE start || _quit "Can't start PostgreSQL"
+            RUNNING=1
+        fi
+
+        # we need to find correct port. So we need PostgreSQL configuration
+        CONFIGFILE=/etc/postgresql/postgresql.conf
+        PG_HBA_FILE=/etc/postgresql/pg_hba.conf
+        if [ -f /var/lib/pgsql/data/postgresql.conf ]; then
+            CONFIGFILE=/var/lib/pgsql/data/postgresql.conf
+            PG_HBA_FILE=/var/lib/pgsql/data/pg_hba.conf
+        fi
+        if [ -f /var/lib/pgsql/$DBVERSION/data/postgresql.conf ]; then
+            CONFIGFILE=/var/lib/pgsql/$DBVERSION/data/postgresql.conf
+            PG_HBA_FILE=/var/lib/pgsql/$DBVERSION/data/pg_hba.conf
+        fi
+        if [ -f /var/lib/postgresql/data/postgresql.conf ]; then 
+            CONFIGFILE=/var/lib/postgresql/data/postgresql.conf
+    	    PG_HBA_FILE=/var/lib/postgresql/data/pg_hba.conf
+        fi
+        if [ -f /var/lib/postgresql/$DBVERSION/data/postgresql.conf ]; then 
+            CONFIGFILE=/var/lib/postgresql/$DBVERSION/data/postgresql.conf
+            PG_HBA_FILE=/var/lib/postgresql/$DBVERSION/data/pg_hba.conf
+        fi
+
+        PG_PORT=`cat $CONFIGFILE | grep port | cut -d# -f 1 | cut -d= -f 2 | sed "s/[[:space:]]*//g"`
+        # Trim spaces
+	PG_PORT=$(echo $PG_PORT | sed 's/ *$//g' | sed 's/^ *//g')
+        if [ "x$PG_PORT" = "x" ]; then
+	    PG_PORT=5432
+        fi
+    fi    
+}
+
+WinStrom_detectRunning() {
+    SUFF=$1
+    RUNNING=0
+    if [ -f $ABRAFLEXI_PID$SUFF ]; then
+	    ps `cat $ABRAFLEXI_PID$SUFF` >/dev/null && RUNNING=1 || true
+    fi
+    return 0
+}
+
+
+
+WinStrom_startIfNeeded() {
+    R=$1
+
+    # Start PostgreSQL
+    if [ "x$R" = "x0" ]; then
+        _debug "Starting PostgreSQL"
+        OK=1
+        $PG_SERVICE start 2> /dev/null || OK=0
+        if [ "x$OK" == "x0" -a "x$PG_SERVICE_NOT_CLUSTER" != "x" ]; then
+            $PG_SERVICE_NOT_CLUSTER start  2> /dev/null && OK=1
+        fi
+
+        if [ "x$OK" == "x0" ]; then
+	    _quit "Can't start PostgreSQL"
+        fi
+
+        sleep 1
+    fi
+}

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+DIR=`dirname $0`
+if [ -f $DIR/functions ]; then
+    . $DIR/functions
+else
+    if [ -f /usr/share/abraflexi/bin/functions ]; then
+	. /usr/share/abraflexi/bin/functions
+    fi
+fi
+
+
+# Detect PostgreSQL and sets $RUNNING if PostgreSQL is Running.
+WinStrom_detectPostgresql
+WinStrom_startIfNeeded $RUNNING
+
+/etc/init.d/abraflexi start || exit 1
+
+exit 0

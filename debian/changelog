@@ -1,4 +1,4 @@
-flexibee-server (2020.1.0.7) UNRELEASED; urgency=medium
+abraflexi-server (2021.1.0) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -19,20 +19,253 @@ flexibee-server (2020.1.0.7) UNRELEASED; urgency=medium
   [ CyberVitexus ]
   * Use upstream version number
   * Debian buster compatibility add
-  * 
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
-  * Debian buster compatibility add
+  * Debian 10 Buster build
+  * Debian 10 Buster build
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
 
- -- CyberVitexus <vitex@exiv.jinonice.czf>  Fri, 21 Feb 2020 23:52:58 +0100
+  [ root ]
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+  * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
+    PIDFile= references path below legacy directory /var/run/, updating
+    /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
+    file accordingly.
+
+ -- root <root@exiv.jinonice.czf>  Sun, 31 Jan 2021 05:15:26 +0100

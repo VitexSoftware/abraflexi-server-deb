@@ -1,4 +1,4 @@
-Source: flexibee-server
+Source: abraflexi-server
 Build-Depends: debhelper (>= 7.0.50~),po-debconf,debconf
 Standards-Version: 3.8.4
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
@@ -6,19 +6,19 @@ Uploaders: Vitex <vitex@hippy.cz>
 Priority: optional
 Homepage: https://github.com/VitexSoftware/flexibee-server-deb
 
-Package: flexibee-server
+Package: abraflexi-server
 Architecture: all
-Depends: openjdk-11-jre-headless|oracle-java11-jre, postgresql-client-common, postgresql, postgresql-pltcl, postgresql-contrib, lsb-base, locales-all,debconf
+Depends: default-jdk-headless|openjdk-11-jre-headless|oracle-java11-jre, postgresql-client-common, postgresql, postgresql-pltcl, postgresql-contrib, lsb-base, locales-all,debconf
 Conflicts: flexibee-client,flexibee, winstrom, winstrom-client
 Replaces: flexibee-client,flexibee, winstrom
-Recommends: autopostgresqlbackup, flexibe-server-backup, flexibee-server-systemd
+Recommends: autopostgresqlbackup, abraflexi-server-backup, abraflexi-server-systemd
 Section: contrib/office
 Priority: optional
 Homepage: http://www.flexibee.eu/
-Description: Ekonomický systém ABRA FlexiBee - REST API a HTML rozhraní
- Serverová verze Internetového ekonomického systému ABRA FlexiBee.
+Description: Ekonomický systém ABRA Flexi - REST API a HTML rozhraní
+ Serverová verze Internetového ekonomického systému ABRA Flexi.
 
-Package: flexibee-server-backup
+Package: abraflexi-server-backup
 Architecture: all
 Depends: flexibee-server|flexibee,debconf
 Section: contrib/office

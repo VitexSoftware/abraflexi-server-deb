@@ -1,0 +1,137 @@
+#!/bin/bash
+
+COMMAND="/usr/share/flexibee/bin/run-server-su"
+
+MYLANG=`echo $LANG | cut -c 1-2`
+if [ x"$MYLANG" = x"cs" ]; then
+    DESCRIPTION="Spuštění serveru"
+else
+    if [ x"$MYLANG" = x"sk" ]; then
+	DESCRIPTION="Spustenie servera"
+    else
+        DESCRIPTION="Start server"
+    fi
+fi
+
+if [ -f /etc/default/flexibee ]; then
+    . /etc/default/flexibee
+fi
+
+# Should we use 'sudo' or 'su'?
+if [ "x$USE_SUDOERS" = "x" ]; then
+	SUDOER=0
+	# detect distribution and default usage on it
+	if [ -x /usr/bin/lsb_release ]; then
+	    if [ "x`/usr/bin/lsb_release -is`"  = "xUbuntu" ]; then
+		SUDOERS=1
+	    fi
+	fi
+else
+    SUDOERS=$USE_SUDOERS
+fi
+
+runInTerminal() 
+{
+	SU="$1 $COMMAND"
+
+	if [ -x /usr/bin/konsole ]; then
+		/usr/bin/konsole --icon /usr/share/flexibee/flexibee-logo-small.png --caption  "$DESCRIPTION" -e "$SU" && exit 0
+		exit 1
+	fi
+
+	if [ -x /usr/bin/gnome-terminal ]; then
+		/usr/bin/gnome-terminal --hide-menubar --title  "$DESCRIPTION" -e "$SU" && exit 0
+		exit 1
+	fi
+
+	if [ -x /usr/bin/xterm ]; then
+		/usr/bin/xterm -T "$DESCRIPTION" -e "$SU" && exit 0
+		exit 1
+	fi
+}
+
+runSudo()
+{
+	if [ -x /usr/bin/gksudo ]; then
+	    /usr/bin/gksudo --description "$DESCRIPTION" $COMMAND && exit 0
+	    exit 1
+	fi
+
+	if [ -x /usr/bin/kdesudo ]; then
+	    /usr/bin/kdesudo -i /usr/share/flexibee/flexibee-logo-small.png --comment "$DESCRIPTION" $COMMAND && exit 0
+	    exit 1
+	fi
+}
+
+runSu() 
+{
+	if [ -x /usr/bin/gksu ]; then
+	    /usr/bin/gksu --description "$DESCRIPTION" $COMMAND && exit 0
+	    exit 1
+	fi
+
+	if [ -x /usr/bin/gnomesu ]; then
+	    /usr/bin/gnomesu --command="$COMMAND" && exit 0
+	    exit 1
+	fi
+
+	if [ -x /usr/bin/kdesu ]; then
+	    /usr/bin/kdesu -i /usr/share/flexibee/flexibee-logo-small.png $COMMAND && exit 0
+	    exit 1
+	fi
+
+}
+
+# Detect graphical terminal
+if [ "x$DISPLAY" != "x" ]; then
+    if [  "x$SUDOERS" = "x1" ]; then
+	runSudo
+	# fallback to su
+	runSu
+
+	if [ -x /usr/bin/sudo ]; then
+	    runInTerminal "/usr/bin/sudo"
+	fi
+
+    else
+	runSu
+	# fallback to sudo
+	runSudo
+
+	if [ -x /bin/su ]; then
+	    runInTerminal "/bin/su -"
+	fi
+
+    fi
+
+    if [ -x /usr/bin/beesu ]; then
+        /usr/bin/beesu $COMMAND && exit 0
+        exit 1
+    fi
+else
+	if [  "x$SUDOERS" = "x1" ]; then
+		if [ -x /usr/bin/sudo ]; then
+			/usr/bin/sudo "$COMMAND" && exit 0
+			exit 1
+		else
+			if [ -x /bin/su ]; then
+				/bin/su - $COMMAND && exit 0
+				exit 1
+			fi
+		fi
+	else
+		if [ -x /bin/su ]; then
+			/bin/su - $COMMAND && exit 0
+			exit 1
+		else
+			if [ -x /usr/bin/sudo ]; then
+				/usr/bin/sudo "$COMMAND" && exit 0
+				exit 1
+			fi
+		fi
+	fi
+fi
+
+echo "Can't run ABRA Flexi server. Use /etc/init.d/flexibee start"
+
+exit 1

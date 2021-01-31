@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/stretch64"
-  config.vm.hostname = "flexibee-server";
+  config.vm.box = "debian/buster64"
+  config.vm.hostname = "abraflexi-server";
   config.vm.network "forwarded_port", guest: 5434, host: 5434
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
 
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
   config.push.define "atlas" do |push|
-     push.app = "vitexsoftware/flexibee"
+     push.app = "vitexsoftware/abraflexi-server"
   end
 
    config.vm.provision "shell", inline: <<-SHELL
@@ -33,14 +33,8 @@ Vagrant.configure("2") do |config|
      export LC_ALL="cs_CZ.UTF-8"
 
      apt-get -y install gdebi-core curl locales mc htop screen net-tools html2text
-#     CURVER="`curl -s https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep h2 | awk '{gsub("<[^>]*>", "")}1'| awk '{print $2}'`"
-#     IFS='.' read -r -a array <<< "$CURVER"
-#     GETURL="http://download.flexibee.eu/download/${array[0]}.${array[1]}/$CURVER/flexibee_${CURVER}_all.deb"
-#     wget $GETURL
-#     PACKAGE=`ls /vagrant/flexibee-server_*_all.deb`
-     gdebi --n --q `ls /vagrant/flexibee-server_*_all.deb`
-#     dpkg-reconfigure flexibee
-     service flexibee status
+     gdebi --n --q `ls /vagrant/abraflexi-server_*_all.deb`
+     service abraflexi status
 
       curl -k -v https://127.0.0.1:5434/login-logout/first-user-form | html2text
 

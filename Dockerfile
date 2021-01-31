@@ -1,27 +1,21 @@
 FROM debian:latest
+LABEL maintainer="Vítězslav Dvořák <info@vitexsoftware.cz>"
+ENV DEBIAN_FRONTEND noninteractive 
 
-MAINTAINER Vitex <info@vitexsoftware.cz>
+RUN apt update && apt-get install -my wget gnupg lsb-release gdebi-core
 
-ENV DEBIAN_FRONTEND noninteractive
-
-# Install basics
-
+RUN echo "deb http://repo.vitexsoftware.cz $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/vitexsoftware.list
+RUN wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.cz/keyring.gpg
 RUN apt update
 
-RUN apt -y install wget gnupg
+ADD abraflexi-server_*_all.deb /tmp/abraflexi-server.deb
 
-RUN wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | apt-key add -
+RUN gdebi -n /tmp/abraflexi-server.deb
 
-RUN echo deb http://v.s.cz/ stable main | tee /etc/apt/sources.list.d/vitexsoftware.list 
-
-RUN apt update
-
-RUN apt -y install flexibee-server
-
-# Expose FlexiBee
+# Expose abraflexi
 
 EXPOSE 5434
 
-CMD /etc/init.d/flexibee start
+CMD /etc/init.d/abraflexi start
 
 ENTRYPOINT ["/bin/bash"]

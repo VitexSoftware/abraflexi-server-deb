@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#
+# zalohovaci skript ABRA Flexi
+#
+
+DIR=$1
+
+if [ x"$DIR" = x"" ]; then
+    echo "$0 [backup_dir]" 2> /dev/stderr
+    exit 1
+fi
+
+if [ x"$USER" != x"root" -a x"$LOGNAME" != x"root" ]; then
+    echo "This script can be run only as a root user" 2> /dev/stderr
+    exit 2
+fi
+
+DBUSER=postgres
+DT=`date "+%Y%m%d"`
+
+BACKUPDIR=/tmp/flexibeee-pgsql-backup/
+
+rm -rf $BACKUPDIR
+mkdir -p $DIR
+mkdir -p $BACKUPDIR
+chown postgres $BACKUPDIR
+cd $BACKUPDIR
+
+for j in `su $DBUSER -c "pg_lsclusters -h | grep -v down | grep -e winstrom -e flexibee | sed -r 's/([0-9\.]+)[[:blank:]]+/\1\//' | cut '-d ' -f 1"`; do 
+    CLUSTER=$j
+    CL=`echo $j | sed 's/\//\-/'`
+
+    # Volba pro zpetnou kompatibilitu zaloh z PostgreSQL 9.0 nebo novejsi obnovovanych na starsi verzi
+    PG_PRE_V9=`pg_dump -V --cluster $CLUSTER | grep -E "\(PostgreSQL\) [0-8]\.?" &> /dev/null ; echo $?`
+    if [ $PG_PRE_V9 -eq 0 ]; then
+        PGOPTIONS=''
+    else
+        PGOPTIONS='-c bytea_output=escape'
+    fi
+
+    for i in `su $DBUSER -c "psql --cluster $CLUSTER -l -A -t" | cut -d\| -f 1 | grep -v template0 | grep -v template1 | grep -v = | grep -v postgres | grep -v \# | grep -v centralServer | sed "y/\//-/"`; do
+        DBNAME=$i
+        MY_FILE=$BACKUPDIR$DBNAME-$CL-$DT
+        if [ -f $MY_FILE.flexibee-backup ]; then
+            MY_FILE="$MY_FILE-2"
+        fi
+        su $DBUSER -c "/usr/bin/pg_dump --cluster $CLUSTER -U $DBUSER $DBNAME -b -Fc --file=$MY_FILE.flexibee-backup"
+        mv $MY_FILE.flexibee-backup $DIR/ > /dev/null 
+	if [ -f $MY_FILE.flexibee-backup ]; then
+        	rm $MY_FILE.flexibee-backup
+	fi
+    done
+
+    su $DBUSER -c "pg_dumpall --cluster $CLUSTER -U $DBUSER --globals-only > $BACKUPDIR/globals-$CL-$DT.sql"
+    mv $BACKUPDIR/globals-$CL-$DT.sql $DIR/ > /dev/null 
+done
+
+exit 0
