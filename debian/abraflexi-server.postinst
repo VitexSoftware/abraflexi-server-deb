@@ -1,0 +1,114 @@
+#!/bin/bash
+
+
+. /usr/share/debconf/confmodule
+
+set -e
+MYLANG=`echo $LANG | cut -c 1-2`
+
+INSTALL_TYPE=server
+INSTALL_DB=true
+
+if [ -f /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties ]
+then
+    sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties
+fi
+
+abraflexi-licensecheck
+
+if [ -f /usr/bin/update-mime-database ]; then
+	update-mime-database /usr/share/mime/ > /dev/null || true
+fi
+
+if [ -f /usr/bin/xdg-desktop-menu ]; then
+    xdg-desktop-menu install --novendor /usr/share/applications/abraflexi-server.desktop > /dev/null || true
+fi
+if [ -f /usr/bin/xdg-mime ]; then
+    xdg-mime install --novendor /usr/share/mime/packages/abraflexi.xml > /dev/null  || true
+fi
+if [ -f /usr/bin/xdg-icon-resource ]; then
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-connection.png abraflexi-connection
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-backup.png abraflexi-backup
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-license.png abraflexi-license
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-query.png abraflexi-query
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-report.png abraflexi-report
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-xml.png abraflexi-xml
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-isdoc.png abraflexi-isdoc
+
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-backup.png winstrom-backup
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-license.png winstrom-license
+    xdg-icon-resource install --context mimetypes --size 128 /usr/share/abraflexi/abraflexi-xml.png winstrom-xml
+fi
+
+INSTALL_DB=true
+
+CLIENT_TYPE=client
+
+# check if PostgreSQL cluster is installed.
+if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then 
+
+	DBVERSION=11
+	PATHPGSQL="/usr/lib/postgresql/"
+	SUPPORTEDVERSIONS=( "11" "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" )
+	for ver in "${SUPPORTEDVERSIONS[@]}"
+	do
+		if [ -d $PATHPGSQL$ver ]; then 
+			DBVERSION=$ver
+			break;
+		fi
+	done
+
+		if [ ! -f /etc/abraflexi/ws.cenServer.xml -a -f /usr/share/abraflexi/ws.cenServer.xml ]; then
+			cp /usr/share/abraflexi/ws.cenServer.xml /etc/abraflexi/ws.cenServer.xml || true
+		fi
+
+	if [ "x$INSTALL_DB" = "xtrue" ]; then
+		PG_USER=postgres
+		PG_GROUP=postgres
+		PG_PORT=5435
+	
+		if [ "x$MYLANG" = "xcs" ]; then
+			echo "Připravuji databázi PostgreSQL pro systém FlexiBee ..."
+		else
+			echo "Preparing PostgreSQL for FlexiBee ..."
+		fi
+
+		# check for cluster existance
+		EXISTING=0
+		pg_lsclusters  | grep -e winstrom -e abraflexi 2>/dev/null > /dev/null && EXISTING=1
+		if [ "x$EXISTING" = "x0" ]; then
+			if [ "x$MYLANG" = "xcs" ]; then
+				echo -n "  Vytvářím novou databázi ... "
+			else
+				echo -n "  Creating new database ... "
+			fi
+			pg_createcluster --port=$PG_PORT --datadir=/var/lib/abraflexi --encoding=utf-8 --locale=cs_CZ.utf8 --user=$PG_USER --group=$PG_GROUP --start-conf=auto --socketdir=/var/run/postgresql/ "$DBVERSION" abraflexi > /dev/null 
+			echo "ok"
+		else 
+			if [ "x$MYLANG" = "xcs" ]; then
+				echo "  Použiji existující databázi ..."
+			else
+				echo "  Using existing database ..."
+			fi
+		fi
+
+
+		systemctl enable abraflexi
+	
+		if [ -f /usr/share/abraflexi/bin/initdb.sh ]; then
+			/usr/share/abraflexi/bin/initdb.sh || exit 1
+		fi
+
+	fi
+fi
+
+if [ -f /usr/share/abraflexi/bin/update.sh ]; then
+	/usr/share/abraflexi/bin/update.sh || exit 1
+fi
+
+
+systemctl start abraflexi || exit 1
+
+db_stop
+
+exit 0

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+. /usr/share/debconf/confmodule
+
+set -e
+
+if [ -x /etc/init.d/abraflexi ]; then
+    service abraflexi stop || true
+fi
+
+# backup changes in abraflexi installation type done manually by user [Bug 41596 - Aktualizace abraflexi balíčku na linuxu resetuje nastavení ABRAFLEXI_CFG (typ instalace se vrací na local)]
+if [ -f /etc/default/abraflexi ]; then
+    . /etc/default/abraflexi
+    
+    if [ "x$ABRAFLEXI_CFG" == "xlocal" ]; then
+        db_set winstrom/local-network "local"
+    else
+	db_set winstrom/local-network "network"
+	if [ "x$ABRAFLEXI_CFG" == "xserver" ]; then
+            db_set winstrom/server-client "server"
+        else 
+            db_set winstrom/server-client "client"
+        fi
+    fi
+fi

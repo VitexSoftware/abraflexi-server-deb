@@ -1,4 +1,4 @@
-abraflexi-server (2021.1.0) UNRELEASED; urgency=medium
+abraflexi-server (2021.4.0) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -268,4 +268,10 @@ abraflexi-server (2021.1.0) UNRELEASED; urgency=medium
     /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
     file accordingly.
 
- -- root <root@exiv.jinonice.czf>  Sun, 31 Jan 2021 05:15:26 +0100
+  [ CyberVitexus ]
+  * Try to run on java 11
+
+  [ root ]
+  * Try to run on java 11
+
+ -- root <root@exiv.jinonice.czf>  Fri, 02 Apr 2021 13:51:41 +0200

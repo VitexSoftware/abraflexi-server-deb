@@ -1,0 +1,4 @@
+#!/bin/bash
+. /etc/default/flexibee-server-backup
+/usr/share/flexibee/bin/flexibee-backup ${BACKUPDIR}
+

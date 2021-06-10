@@ -1,0 +1,6 @@
+Template: flexbee-server-backup/BACKUPDIR
+Type: string
+_Default: /var/backup/abraflexi
+_Description: abraflexi Backup directory path
+ Path to directory where to stora abraflexi daily backups
+

@@ -1,0 +1,39 @@
+server/abraflexi-server.xml etc/abraflexi/
+server/abraflexi  	    etc/init.d/
+server/logrotate.d/abraflexi	etc/logrotate.d/
+server/abraflexi-server usr/sbin/
+
+#usr/sbin/*
+
+server/ufw/abraflexi	etc/ufw/applications.d/
+
+#usr/share/app-install/  
+server/abraflexi-server.desktop	 usr/share/applications/
+
+#usr/share/doc/  
+#usr/share/flexibee/*	usr/share/abraflexi
+#usr/share/fonts/	usr/share/fonts
+#usr/share/mime/		usr/share/mime
+#usr/share/mimelnk/	usr/share/mimelink
+#usr/share/pixmaps/	usr/share/pixmaps
+
+#usr/share/app-install/desktop/
+#usr/share/doc/flexibee/
+bin/*				usr/share/abraflexi/bin
+usr/share/flexibee/lib/*	usr/share/abraflexi/lib
+usr/share/flexibee/sql/*	usr/share/abraflexi/sql
+#usr/share/fonts/truetype/
+#usr/share/mimelnk/application
+#usr/share/mime/packages
+
+etc/abraflexi	etc/default
+
+server/abraflexi-licensecheck  		usr/bin
+server/abraflexi-server.desktop 	usr/share/applications
+server/abraflexi-server.png 		usr/share/pixmaps
+server/avahi/abraflexi.service  	etc/avahi/services/
+server/abraflexi.service  		lib/systemd/system
+debian/javax.annotation-api-1.3.2.jar 	usr/share/abraflexi/lib/
+debian/jaxb-api-2.3.0.jar 		usr/share/abraflexi/lib/jaxb-api-2.3.0.jar
+
+
