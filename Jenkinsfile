@@ -8,7 +8,7 @@ pipeline {
             }
             steps {
                 dir('build/debian/package') {
-                    sh 'git clone --depth 1 --single-branch $GIT_URL'
+                    sh 'if [ ! -d source ]; git clone --depth 1 --single-branch $GIT_URL source ; else cd source; git pull; cd ..; fi;'
                     sh 'debuild -i -us -uc -b'
                     sh 'mv *.deb *.changes *.build $WORKSPACE/dist/debian/'
                 }
@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 dir('build/debian/package') {
-                    sh 'git clone --depth 1 --single-branch $GIT_URL'
+                    sh 'if [ ! -d source ]; git clone --depth 1 --single-branch $GIT_URL source ; else cd source; git pull; cd ..; fi;'
                     sh 'debuild -i -us -uc -b'
                     sh 'mv *.deb *.changes *.build $WORKSPACE/dist/debian/'
                 }
@@ -34,7 +34,7 @@ pipeline {
             }
             steps {
                 dir('build/debian/package') {
-                    sh 'git clone --depth 1 --single-branch $GIT_URL'
+                    sh 'if [ ! -d source ]; git clone --depth 1 --single-branch $GIT_URL source ; else cd source; git pull; cd ..; fi;'
                     sh 'debuild -i -us -uc -b'
                     sh 'mv *.deb *.changes *.build $WORKSPACE/dist/debian/'
                 }
@@ -46,7 +46,7 @@ pipeline {
             }
             steps {
                 dir('build/debian/package') {
-                    sh 'git clone --depth 1 --single-branch $GIT_URL'
+                    sh 'if [ ! -d source ]; git clone --depth 1 --single-branch $GIT_URL source ; else cd source; git pull; cd ..; fi;'
                     sh 'debuild -i -us -uc -b'
                     sh 'mv *.deb *.changes *.build $WORKSPACE/dist/debian/'
                 }
