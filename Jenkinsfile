@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('debian-stable') {
             agent {
-                docker { image 'debian:stable' }
+                docker { image 'vitexsoftware/debian:stable' }
             }
             steps {
                 sh 'cat /etc/apt/sources.list'
@@ -21,7 +21,7 @@ pipeline {
 
         stage('debian-testing') {
             agent {
-                docker { image 'debian:testing' }
+                docker { image 'vitexsoftware/debian:testing' }
             }
             steps {
                 sh 'cat /etc/apt/sources.list'
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('ubuntu-stable') {
             agent {
-                docker { image 'ubuntu' }
+                docker { image 'vitexsoftware/trusty:stable' }
             }
             steps {
                 sh 'cat /etc/apt/sources.list'
@@ -51,7 +51,7 @@ pipeline {
         }
         stage('ubuntu-hirsute') {
             agent {
-                docker { image 'ubuntu:hirsute' }
+                docker { image 'vitexsoftware/ubuntu:testing' }
             }
             steps {
                 sh 'cat /etc/apt/sources.list'
