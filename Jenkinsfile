@@ -124,7 +124,7 @@ def buildPackage() {
     ).trim()
 
     def LATESTPKG = LATESTURL.split( '/' )[ -1 ]
-    def WEB_VERSION = LATESTPKG.split( '_' )[ -1 ]
+    def WEB_VERSION = LATESTPKG.split( '_' )[ 1 ]
 
     sh 'dch -b -v ' + WEB_VERSION  + ' "' + LATESTURL  + '"'
 
