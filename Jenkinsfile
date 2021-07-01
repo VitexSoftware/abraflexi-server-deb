@@ -129,7 +129,7 @@ def buildPackage() {
     ).trim()
 
     def WEB_VERSION = sh (
-	script: 'echo ' + LATESTPKG + ' | awk -F_\'{print $2}\''  ,
+	script: 'echo ' + LATESTPKG + ' | awk -F_\'{print \$2}\''  ,
         returnStdout: true
     ).trim()
 
