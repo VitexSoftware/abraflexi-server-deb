@@ -10,6 +10,7 @@ override_dh_prep:
 	ls -la
 	ls -la ..
 	ls -la ../..
+	ls -la ../../..
 	ar -x ../flexibee_*_all.deb
 	cd ..
 	mkdir data
