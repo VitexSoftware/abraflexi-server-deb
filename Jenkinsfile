@@ -119,7 +119,7 @@ def copyArtifact(){
 def buildPackage() {
 
     def LATESTURL = sh (
-	script: 'curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $2}' | head -n 1',
+	script: 'curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F\'"\' \'{print \$2}\' | head -n 1',
         returnStdout: true
     ).trim()
 
