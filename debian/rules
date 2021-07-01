@@ -3,7 +3,7 @@
 %:
 	dh $@
 
-override_dh_build:
+override_dh_prep:
 	mkdir tmp
 	cd tmp
 	ar -x ../flexibee_*_all.deb
@@ -12,6 +12,9 @@ override_dh_build:
 	cd data
 	tar xzvf ../tmp/data.tar.gz
 	cd ..
+	dh_prep
+
+override_dh_build:
 	dh_build
 
 override_dh_install:
