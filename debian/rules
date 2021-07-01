@@ -4,6 +4,14 @@
 	dh $@
 
 override_dh_build:
+	mkdir tmp
+	cd tmp
+	ar -x ../flexibee_*_all.deb
+	cd ..
+	mkdir data
+	cd data
+	tar xzvf ../tmp/data.tar.gz
+	cd ..
 	dh_build
 
 override_dh_install:

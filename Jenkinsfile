@@ -123,6 +123,8 @@ def buildPackage() {
         returnStdout: true
     ).trim()
 
+    sh 'wget -c ' + LATESTURL
+
     def LATESTPKG = LATESTURL.split( '/' )[ -1 ]
     def WEB_VERSION = LATESTPKG.split( '_' )[ 1 ]
 
