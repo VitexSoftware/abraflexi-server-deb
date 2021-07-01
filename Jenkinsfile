@@ -123,10 +123,11 @@ def buildPackage() {
         returnStdout: true
     ).trim()
 
-    sh 'wget -c ' + LATESTURL
 
     def LATESTPKG = LATESTURL.split( '/' )[ -1 ]
     def WEB_VERSION = LATESTPKG.split( '_' )[ 1 ]
+
+    sh 'mkdir -p build/debian/package ; wget -c ' + LATESTURL + ' -O build/debian/package/' + LATESTPKG
 
     sh 'dch -b -v ' + WEB_VERSION  + ' "' + LATESTURL  + '"'
 
