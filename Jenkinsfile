@@ -123,15 +123,8 @@ def buildPackage() {
         returnStdout: true
     ).trim()
 
-    def LATESTPKG = sh (
-	script: 'basename ' + LATESTURL ,
-        returnStdout: true
-    ).trim()
-
-    def WEB_VERSION = sh (
-	script: 'echo ' + LATESTPKG + ' | awk -F_\'{print \$2}\''  ,
-        returnStdout: true
-    ).trim()
+    def LATESTPKG = LATESTURL.split( '/' )[ -1 ]
+    def WEB_VERSION = LATESTPKG.split( '_' )[ -1 ]
 
     sh 'dch -b -v ' + WEB_VERSION  + ' "' + LATESTURL  + '"'
 
