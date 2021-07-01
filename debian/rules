@@ -4,8 +4,12 @@
 	dh $@
 
 override_dh_prep:
-	mkdir tmp
+	mkdir -p tmp
 	cd tmp
+	rm -rf *
+	ls -la
+	ls -la ..
+	ls -la ../..
 	ar -x ../flexibee_*_all.deb
 	cd ..
 	mkdir data
