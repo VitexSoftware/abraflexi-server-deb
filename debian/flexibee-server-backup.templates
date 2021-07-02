@@ -1,6 +1,0 @@
-Template: flexbee-server-backup/BACKUPDIR
-Type: string
-_Default: /var/backup/flexibee
-_Description: FlexiBee Backup directory path
- Path to directory where to stora FlexiBee daily backups
-

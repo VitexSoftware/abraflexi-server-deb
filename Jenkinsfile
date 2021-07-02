@@ -117,6 +117,7 @@ def copyArtifact(){
 }
 
 def buildPackage() {
+    copyArtifacts(projectName: 'Spoje.Net/FreshAbraFlexi');
 
     def LATESTURL = sh (
 	script: 'curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F\'"\' \'{print \$2}\' | head -n 1',
@@ -126,8 +127,6 @@ def buildPackage() {
 
     def LATESTPKG = LATESTURL.split( '/' )[ -1 ]
     def WEB_VERSION = LATESTPKG.split( '_' )[ 1 ]
-
-    sh 'mkdir -p build/debian/package ; wget -c ' + LATESTURL + ' -O build/debian/package/' + LATESTPKG
 
     sh 'dch -b -v ' + WEB_VERSION  + ' "' + LATESTURL  + '"'
 

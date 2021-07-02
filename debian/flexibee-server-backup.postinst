@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-. /usr/share/debconf/confmodule
-
-db_get flexbee-server-backup/BACKUPDIR
-sed -i "/BACKUPDIR/c\BACKUPDIR=\"${RET}\"" /etc/default/flexibee-server-backup
-
-exit 0
