@@ -4,19 +4,7 @@
 	dh $@
 
 override_dh_prep:
-	mkdir -p tmp
-	cd tmp
-	rm -rf *
-	ls -la
-	ls -la ..
-	ls -la ../..
-	ls -la ../../..
-	ar -x ../flexibee_*_all.deb
-	cd ..
-	mkdir data
-	cd data
-	tar xzvf ../tmp/data.tar.gz
-	cd ..
+	./fresh.sh
 	dh_prep
 
 override_dh_build:

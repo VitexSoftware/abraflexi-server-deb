@@ -117,7 +117,7 @@ def copyArtifact(){
 }
 
 def buildPackage() {
-    copyArtifacts(projectName: 'Spoje.Net/FreshAbraFlexi', flatten: true, target: '..' );
+    copyArtifacts(projectName: 'Spoje.Net/FreshAbraFlexi', flatten: true, target: './' );
 
     def LATESTURL = sh (
 	script: 'curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F\'"\' \'{print \$2}\' | head -n 1',
