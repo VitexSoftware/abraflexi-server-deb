@@ -1,8 +1,13 @@
 #!/bin/bash
 
 PACKAGE="flexibee-server"
-LATESTURL=`curl -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $6}' | head -n 1`
+LATESTURL=`curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $2}' | head -n 1`
+echo Current Upstream: $LATESTURL
+
 LATESTPKG=`basename $LATESTURL`
+
+
+LATESTPKG=`basename ${LATESTURL}`
 VERSION=`echo $LATESTPKG | awk -F_ '{print $2}'`
 
 

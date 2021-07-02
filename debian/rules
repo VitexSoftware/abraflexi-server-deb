@@ -20,6 +20,7 @@ override_dh_install:
 	rm -rf data/usr/share/pixmaps
 	rm -rf data/etc/apt/sources.list.d/flexibee.list
 	echo FLEXIBEE_CFG=server >> data/etc/default/flexibee
+	mkdir -p debian/flexibee-server
 	mv data/*	debian/flexibee-server
 	dh_install
 

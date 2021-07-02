@@ -1,4 +1,4 @@
-flexibee-server (2020.1.0.8) UNRELEASED; urgency=medium
+flexibee-server (2021.6.1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -50,4 +50,7 @@ flexibee-server (2020.1.0.8) UNRELEASED; urgency=medium
   * Use upstream version number
   * Use upstream version number
 
- -- vitex <vitex@hosting.vitexsoftware.cz>  Sun, 01 Mar 2020 12:08:50 +0100
+  [ root ]
+  * do not download package if found on ./
+
+ -- root <root@exiv.jinonice.czf>  Fri, 02 Jul 2021 10:10:05 +0200
