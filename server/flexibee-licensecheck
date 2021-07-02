@@ -2,7 +2,7 @@
 
 # it is not hard to overcome this. This is for letting the user know in advance that the installation will fail (license is checked at startup)
 LICENSE_CHECKER_CP=""
-for i in /usr/share/flexibee/lib/postgresql-*.jar /usr/share/flexibee/lib/winstrom-connector-*.jar /usr/share/flexibee/lib/LicenseChecker.jar; do
+for i in /usr/share/flexibee/lib/postgresql-*.jar /usr/share/flexibee/lib/winstrom-connector-*.jar /usr/share/flexibee/lib/license-checker-*.jar; do
 	LICENSE_CHECKER_CP=$LICENSE_CHECKER_CP:$i
 done
 
