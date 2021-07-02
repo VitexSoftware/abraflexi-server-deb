@@ -16,8 +16,8 @@ then
     echo use existing $LATESTPKG
 else
     wget -c $LATESTURL
-    CHANGES=`git log -n 1 | tail -n+5`
-    dch --newversion $VERSION  $CHANGES
+#    CHANGES=`git log -n 1 | tail -n+5`
+#    dch --newversion $VERSION  $CHANGES
 fi
 
 rm -rf tmp debian/data data
