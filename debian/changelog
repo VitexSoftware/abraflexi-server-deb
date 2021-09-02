@@ -1,4 +1,4 @@
-abraflexi-server (2021.4.0) UNRELEASED; urgency=medium
+abraflexi-server (2021.7.1) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -273,5 +273,6 @@ abraflexi-server (2021.4.0) UNRELEASED; urgency=medium
 
   [ root ]
   * Try to run on java 11
+  * Missin "then" added
 
- -- root <root@exiv.jinonice.czf>  Fri, 02 Apr 2021 13:51:41 +0200
+ -- root <info@vitexsoftware.cz>  Thu, 02 Sep 2021 07:56:24 +0200
