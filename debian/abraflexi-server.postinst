@@ -93,7 +93,11 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then
 		fi
 
 
-		systemctl enable abraflexi
+	        if [ -f /usr/sbin/update-rc.d ]; then
+    		    /usr/sbin/update-rc.d flexibee start 90 2 3 5 . stop 20 0 1 6 . > /dev/null
+		else
+			systemctl enable abraflexi
+	        fi
 	
 		if [ -f /usr/share/abraflexi/bin/initdb.sh ]; then
 			/usr/share/abraflexi/bin/initdb.sh || exit 1
