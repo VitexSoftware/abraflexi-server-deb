@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>ABRA Flexi server configuration</comment>
+    <entry key="host">localhost</entry>
+    <!-- Port of PostgreSQL cluster -->
+    <entry key="port">5435</entry>
+    <entry key="user">dba</entry>
+    <entry key="password">7971</entry>
+    <!-- Port of abraflexi server -->
+    <entry key="defaultPort">5434</entry>
+
+    <!-- Automatically send errors to ABRA Flexi? values: always|never -->
+    <entry key="sendErrors">never</entry>
+
+    <!-- Redirect from HTTP to HTTPS values: no|redirect|yes -->
+    <entry key="forceHttps">redirect</entry>
+
+    <!-- AutoUpgrade (upgrade companies during startup, true=upgrade after startup, false=upgrade on first access, default=false) -->
+    <!-- <entry key="autoUpgrade">true</entry> -->
+
+    <!-- developerDirectory -->
+    <!-- <entry key="developerDirectory">/etc/abraflexi/developer</entry> -->
+
+    <!-- Enable WebHooks (must be enabled in license) -->
+    <!-- <entry key="enableHooks">true</entry> -->
+
+    <!-- Start kernel (kernel in app server) -->
+    <!-- <entry key="startKernel">true</entry> -->
+
+    <!-- EMAIL SETTINGS -->
+    <!-- SMTP address of SMTP server -->
+    <!-- <entry key="smtp.host">localhost</entry> -->
+
+    <!-- SMTP default from - email address of currently logged user is used (if present), otherwise it is used this -->
+    <!-- <entry key="smtp.defaultFrom">noreply@localhost</entry> -->
+
+    <!-- SMTP Auth username -->
+    <!-- <entry key="smtp.auth.user">user</entry> -->
+
+    <!-- SMTP Auth Password -->
+    <!-- <entry key="smtp.auth.password">password </entry> -->
+
+    <!-- SMTP encryption: NEVER | STARTTLS | TLS | SSL
+    -++- NEVER - insecure connection
+    -++- STARTTLS - connection begins insecure with optional switch to secured communication (TLS if supported)
+    -++- TLS - initiated as insecure connection with required switch to secured communication (TLS)
+    -++- SSL - fully secured connection (needed by GMail) -->
+    <!-- <entry key="smtp.encryption">ssl</entry> -->
+
+    <!-- SMTP port (usually keep commented) -->
+    <!-- <entry key="smtp.port">25</entry> -->
+
+</properties>

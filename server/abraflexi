@@ -1,0 +1,243 @@
+#!/bin/bash
+#
+# ABRA Flexi init scripts.
+#
+# chkconfig: 	     235 90 20
+# description:	     Starts and stops ABRA Flexi Server.
+# pidfile:	     /var/run/abraflexi.pid
+#
+### BEGIN INIT INFO
+# Provides:          abraflexi
+# Required-Start:    $local_fs postgresql
+# Required-Stop:     $syslog
+# Should-Start:	     $syslog couchdb
+# Should-Stop:       couchdb postgresql
+# Default-Start:     2 3 5
+# Default-Stop:      0 1 6
+# Short-Description: ABRA Flexi Server
+# Description: 	     Starts and stops ABRA Flexi Server
+### END INIT INFO
+
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DESC="ABRA Flexi Server"
+NAME="abraflexi"
+DAEMON="/usr/sbin/abraflexi-server"
+SCRIPTNAME=/etc/init.d/$NAME
+ABRAFLEXI_PID=/var/run/abraflexi.pid
+ABRAFLEXI_USER="winstrom"
+ABRAFLEXI_VIRTUALS="default"
+
+# Gracefully exit if the package has been removed.
+test -x $DAEMON || exit 0
+
+if [ -f /lib/lsb/init-functions ]; then
+    . /lib/lsb/init-functions
+fi
+
+# SuSE support
+if [ -f /etc/rc.status ]; then
+    . /etc/rc.status
+    rc_reset
+fi
+
+if [ -f /etc/default/abraflexi ]; then
+    . /etc/default/abraflexi
+fi
+
+# this must be after ". /lib/lsb/init-functions". Otherwise it fails on Mandriva.
+set -e
+
+fnNotExists() {
+    fn=$1
+    (export LANG=C; type $fn 2>/dev/null | grep -q 'function') && return 1
+    return 0
+}
+
+if fnNotExists log_daemon_msg; then
+    log_daemon_msg() {
+	echo -n $*
+    }
+fi
+if fnNotExists rc_status; then
+    rc_status() {
+	# do nothing
+	echo ""
+    }
+fi
+if fnNotExists log_end_msg; then
+    log_end_msg() {
+	RES=$1
+	if [ x"$1" != x0 ]; then
+	    rc_failed
+	fi
+	rc_status
+    }
+fi
+
+if fnNotExists log_failure_msg; then
+    log_failure_msg() {
+	echo $*
+    }
+fi
+if fnNotExists rc_failed; then
+    rc_failed() {
+	if fnNotExists log_failure_msg; then
+	    echo "Can't run ABRA Flexi"
+	else
+	    log_failure_msg "Can't run ABRA Flexi"
+	fi
+    }
+fi
+
+
+# change to safe directory
+cd /tmp
+
+
+if [ x"$ABRAFLEXI_CFG" = x"client" ]; then
+    MYLANG=`echo $LANG | cut -c 1-2`
+
+    if [ x"$MYLANG" = x"cs" ]; then
+        echo "ABRA Flexi je vypnuté. Změňte hodnotu ABRAFLEXI_CFG z 'client' na 'local' nebo 'server' v /etc/default/abraflexi"
+    else
+        if [ x"$MYLANG" = x"sk" ]; then
+            echo "ABRA Flexi je vypnuté. Zmeňte hodnotu ABRAFLEXI_CFG z 'client' na 'local' alebo 'server' v /etc/default/abraflexi"
+        else
+            echo "ABRA Flexi is disabled. Change ABRAFLEXI_CFG from 'client' to 'local' or 'server' in /etc/default/abraflexi"
+        fi
+    fi
+    exit 0
+fi
+
+#
+#       Function that starts the daemon/service.
+#
+d_start() {
+    if [ -f /usr/share/abraflexi/bin/functions ]; then
+        . /usr/share/abraflexi/bin/functions
+
+	if [ "$DISABLE_DB"x != "1"x ]; then
+		# Detect PostgreSQL and sets $RUNNING if PostgreSQL is Running.
+		WinStrom_detectPostgresql
+		WinStrom_startIfNeeded $RUNNING
+	fi
+    fi
+
+
+
+    touch /var/log/abraflexi.log
+    id $ABRAFLEXI_USER 2>/dev/null >/dev/null && chown $ABRAFLEXI_USER /var/log/abraflexi.log
+
+
+    $DAEMON || rc_failed
+}
+
+#
+#       Function that stops the daemon/service.
+#
+d_stop() {
+    if [ -f /usr/share/abraflexi/bin/functions ]; then
+        . /usr/share/abraflexi/bin/functions
+    fi
+
+    APP_COUNTER=1
+
+    for virtual in $ABRAFLEXI_VIRTUALS; do
+	PID_FILE=$ABRAFLEXI_PID
+
+	if [ x"$virtual" != x"default" ]; then
+	    SUFFIX="-$virtual"
+	    HOST=" '$virtual'"
+
+	    if [ $APP_COUNTER -gt 1 ]; then
+	        PID_FILE=${PID_FILE}${SUFFIX}
+	    fi
+	else
+	    SUFFIX=
+	    HOST=
+	fi
+
+	APP_COUNTER=$((APP_COUNTER+1))
+
+	WinStrom_detectRunning "$SUFFIX"
+        if [ x$RUNNING = x1 ]; then
+		kill `cat $PID_FILE` || rc_failed
+	fi
+        # Mandriva service status detection
+	if [ -d /var/lock/subsys/ -a -f /var/lock/subsys/abraflexi$SUFFIX ]; then
+		rm -f /var/lock/subsys/abraflexi$SUFFIX 2>/dev/null >/dev/null || true
+	fi
+	if [ -f $PID_FILE ]; then
+		rm -f $PID_FILE 2>/dev/null >/dev/null || true
+	fi
+
+    done
+}
+
+#
+#       Function that check the status of the daemon/service.
+#
+d_status() {
+    . /usr/share/abraflexi/bin/functions
+
+    RET=0
+    for virtual in $ABRAFLEXI_VIRTUALS; do
+	if [ x"$virtual" != x"default" ]; then
+	    SUFFIX="-$virtual"
+	    HOST=" '$virtual'"
+	else
+	    SUFFIX=
+	    HOST=
+	fi
+        WinStrom_detectRunning "$SUFFIX"
+        if [ x$RUNNING = x1 ]; then
+    	    echo -n "$DESC$HOST is running"
+        else
+	    echo -n "$DESC$HOST is NOT running"
+	    RET=1
+        fi
+
+        if [ -f "/etc/abraflexi/virtuals/$virtual/lib/VERSION.txt" ]; then
+            echo " (version: "`cat /etc/abraflexi/virtuals/$virtual/lib/VERSION.txt`")"
+        else
+            echo " (version: "`cat /usr/share/abraflexi/lib/VERSION.txt`")"
+        fi
+    done
+
+    if [ x"$DISABLE_DB" = x"" ]; then
+        echo "PostgreSQL Status:"
+        WinStrom_detectPostgresql
+        $PG_SERVICE status
+    fi
+    return $RET
+}
+
+case "$1" in
+    start)
+        log_daemon_msg "Starting $DESC" "$NAME"
+        d_start
+	log_end_msg $?
+        ;;
+    stop)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+        d_stop
+	log_end_msg $?
+        ;;
+    restart)
+        log_daemon_msg "Restarting services for $DESC" "$NAME"
+        d_stop
+	d_start
+	log_end_msg $?
+        ;;
+    status)
+        d_status
+	exit $?
+	;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|status}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

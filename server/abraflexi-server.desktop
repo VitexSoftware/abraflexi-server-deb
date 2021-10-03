@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=AbraFlexi Web
+Comment="Abra Flexi Web interface"
+Exec=sensible-browser https://localhost:5434
+Terminal=false
+Icon=/usr/share/pixmaps/abraflexi-server.png
+Type=Application
+Categories=Office

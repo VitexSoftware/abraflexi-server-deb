@@ -1,0 +1,16 @@
+[Unit]
+Description=ABRA Flexi Server
+
+[Service]
+EnvironmentFile=/etc/default/abraflexi
+ExecStart=/usr/sbin/abraflexi-server
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=no
+RestartPreventExitStatus=255
+Type=forking
+PIDFile=/run/abraflexi.pid
+
+[Install]
+WantedBy=multi-user.target
+Alias=abraflexi.service
