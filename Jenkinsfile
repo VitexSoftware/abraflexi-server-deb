@@ -134,6 +134,7 @@ def copyArtifact(){
 }
 
 def buildPackage() {
+    sh 'upver.sh'
 
     def DIST = sh (
 	script: 'lsb_release -sc',
