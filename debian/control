@@ -1,6 +1,6 @@
 Source: abraflexi-server
 Build-Depends: debhelper (>= 7.0.50~),po-debconf,debconf
-Standards-Version: 3.8.4
+Standards-Version: 4.5.1
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
 Uploaders: Vitex <vitex@hippy.cz>
 Priority: optional

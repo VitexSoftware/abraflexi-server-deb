@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#DEBHELPER#
+
 . /usr/share/debconf/confmodule
 
 if [ -f /usr/bin/update-mime-database ]; then
