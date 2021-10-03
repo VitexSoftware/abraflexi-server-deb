@@ -1,4 +1,4 @@
-# flexibee-server - deb balíček
+# AbraFlexi Server - deb balíček
 
 ![FlexiBee Server logo](https://raw.githubusercontent.com/VitexSoftware/flexibee-server-deb/master/flexibee-server.png)
 

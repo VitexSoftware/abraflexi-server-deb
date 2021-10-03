@@ -1,4 +1,4 @@
-abraflexi-server (2021.7.1) UNRELEASED; urgency=medium
+abraflexi-server (2021.7.6) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -275,4 +275,17 @@ abraflexi-server (2021.7.1) UNRELEASED; urgency=medium
   * Try to run on java 11
   * Missin "then" added
 
- -- root <info@vitexsoftware.cz>  Thu, 02 Sep 2021 07:56:24 +0200
+  [ vitex ]
+  * Debian Bookworm build added Font dependency added
+  * Debian Bookworm build added Font dependency added
+
+  [ root ]
+  * Debian Bookworm build added Font dependency added
+
+  [ vitex ]
+  * Debian Bookworm build added Font dependency added
+
+  [ root ]
+  * Debian Bookworm build added Font dependency added
+
+ -- root <info@vitexsoftware.cz>  Sun, 03 Oct 2021 18:31:41 +0200
