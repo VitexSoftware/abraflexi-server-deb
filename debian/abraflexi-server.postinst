@@ -14,7 +14,7 @@ then
     sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties
 fi
 
-abraflexi-licensecheck
+#abraflexi-licensecheck
 
 if [ -f /usr/bin/update-mime-database ]; then
 	update-mime-database /usr/share/mime/ > /dev/null || true
