@@ -15,7 +15,6 @@ override_dh_build:
 	dh_build
 
 override_dh_install:
-	tree
 	dh_install
 	sed -i 's/\/var\/run\/abraflexi\.pid/\/run\/abraflexi\.pid/g'  debian/abraflexi-server/etc/init.d/abraflexi
 
