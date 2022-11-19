@@ -20,7 +20,7 @@ Description: Ekonomický systém ABRA Flexi - REST API a HTML rozhraní
 
 Package: abraflexi-server-backup
 Architecture: all
-Depends: flexibee-server|flexibee,debconf
+Depends: flexibee-server|abraflexi-server|flexibee,debconf
 Section: contrib/office
 Priority: optional
 Homepage: https://github.com/VitexSoftware/flexibee-server-deb
