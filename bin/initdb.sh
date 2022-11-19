@@ -158,7 +158,7 @@ fi
 WinStrom_startIfNeeded $RUNNING
 
 # Fix port in configuration file (it can be changed by user). localhost:5434 is the default. If user changed it, we will not overwrite it.
-sed -i -r "s/(port\">)$OLD_PORT/\1$PG_PORT/g" /etc/abraflexi/flexibee-server.xml
+sed -i -r "s/(port\">)$OLD_PORT/\1$PG_PORT/g" /etc/abraflexi/abraflexi-server.xml
 
 # check if user 'dba' exists.
 DBEXIST=$(/bin/su - "$PG_USER" -c "/usr/bin/psql $CLUSTERARG -t -A --command \"select usename from pg_user where usename = 'dba'\" | grep dba > /dev/null 2>&1 && echo OK" || true)
@@ -168,13 +168,13 @@ if [ "x$DBEXIST" != "xOK" ]; then
 fi
 
 # change owner to WinStrom user
-chown winstrom /etc/abraflexi/flexibee-server.xml
+chown winstrom /etc/abraflexi/abraflexi-server.xml
 
 # in local mode we run winstrom server as part of winstrom client.
 if [ x"$WINSTROM_CFG" = x"local" ]; then
-    chmod 0666 /etc/abraflexi/flexibee-server.xml
+    chmod 0666 /etc/abraflexi/abraflexi-server.xml
 else
-    chmod 0600 /etc/abraflexi/flexibee-server.xml
+    chmod 0600 /etc/abraflexi/abraflexi-server.xml
 fi
 
 

@@ -75,9 +75,9 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then
 		PG_PORT=5435
 	
 		if [ "x$MYLANG" = "xcs" ]; then
-			echo "Připravuji databázi PostgreSQL pro systém FlexiBee ..."
+			echo "Připravuji databázi PostgreSQL pro systém AbraFlexi ..."
 		else
-			echo "Preparing PostgreSQL for FlexiBee ..."
+			echo "Preparing PostgreSQL for AbraFlexi ..."
 		fi
 
 		# check for cluster existance
