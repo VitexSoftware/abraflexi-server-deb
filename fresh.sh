@@ -11,7 +11,7 @@ REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split
 echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 
 wget -c $LATESTURL -O orig/flexibee_${VERSION}_all.deb
-
+dch -v $VERSION "v$VERSION repack"
 
 rm -rf debian/tmp data
 

@@ -8,7 +8,7 @@ Homepage: https://github.com/VitexSoftware/flexibee-server-deb
 
 Package: abraflexi-server
 Architecture: all
-Depends: default-jdk-headless|openjdk-11-jre-headless|oracle-java11-jre|openjdk-8-jre-headless, postgresql-client-common, postgresql, postgresql-pltcl, postgresql-contrib, lsb-base, locales-all,debconf, fonts-cmu
+Depends: default-jdk-headless|openjdk-17-jre-headless|openjdk-11-jre-headless|oracle-java11-jre|openjdk-8-jre-headless, postgresql-client-common, postgresql, postgresql-pltcl, postgresql-contrib, lsb-base, locales-all,debconf, fonts-cmu
 Conflicts: flexibee-client,flexibee, winstrom, winstrom-client
 Replaces: flexibee-client,flexibee, winstrom
 Recommends: autopostgresqlbackup, abraflexi-server-backup, abraflexi-server-systemd

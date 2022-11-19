@@ -1,4 +1,4 @@
-abraflexi-server (2021.7.6) UNRELEASED; urgency=medium
+abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
 
   [ Vítězslav Dvořák ]
   * backup package
@@ -288,4 +288,13 @@ abraflexi-server (2021.7.6) UNRELEASED; urgency=medium
   [ root ]
   * Debian Bookworm build added Font dependency added
 
- -- root <info@vitexsoftware.cz>  Sun, 03 Oct 2021 18:31:41 +0200
+  [ vitex ]
+  * v2022.5.5 repack
+
+  [ root ]
+  * v2022.5.5 repack
+  * v2022.5.5 repack
+  * v2022.5.5 repack
+  * v2022.5.5 repack
+
+ -- root <info@vitexsoftware.cz>  Sat, 19 Nov 2022 09:28:02 +0100

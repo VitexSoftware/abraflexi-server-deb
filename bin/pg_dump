@@ -1,11 +1,14 @@
 #!/bin/bash
 
+PROGRAM=pg_restore
+PATHS=("/usr/lib/postgresql/" "/usr/pgsql-")
+PATHSUFIX="/bin/pg_dump"
+
 if [ -x /bin/nice ]; then
     NICE=/bin/nice
-else 
+else
     NICE=/usr/bin/nice
 fi
-
 
 if [ x"${1}" = x"--flexibee-pg-version" ]; then
     if [ x"${2}" != x ]; then
@@ -14,10 +17,14 @@ if [ x"${1}" = x"--flexibee-pg-version" ]; then
     shift
     shift
 
-    $NICE /usr/lib/postgresql/$VERSION/bin/pg_dump "$@"
-    exit
+    for PATHPREFIX in "${PATHS[@]}"
+    do
+        if [ -x $PATHPREFIX$VERSION$PATHSUFIX ]; then
+            $NICE $PATHPREFIX$VERSION$PATHSUFIX "$@"
+            exit
+        fi
+    done
 fi
-
 
 CLUSTERARG=""
 CLUSTERSUFFIX=""
@@ -45,7 +52,7 @@ if [ -f /usr/bin/pg_lsclusters ]; then
 	fi
     fi
 
-    if [ "x$CLUSTERNAME" != "x" ]; then 
+    if [ "x$CLUSTERNAME" != "x" ]; then
       # In case the cluster already existed, we need to fetch it's real PostgreSQL version
       DBVERSION=`/usr/bin/pg_lsclusters | grep $CLUSTERNAME | head -n 1 | cut "-d " -f 1`
       CLUSTERARG="--cluster $DBVERSION/$CLUSTERNAME"

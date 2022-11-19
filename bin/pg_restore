@@ -2,6 +2,32 @@
 
 set -e
 
+PROGRAM=pg_restore
+PATHS=("/usr/lib/postgresql/" "/usr/pgsql-")
+PATHSUFIX="/bin/pg_restore"
+
+if [ -x /bin/nice ]; then
+    NICE=/bin/nice
+else
+    NICE=/usr/bin/nice
+fi
+
+if [ x"${1}" = x"--flexibee-pg-version" ]; then
+    if [ x"${2}" != x ]; then
+        VERSION="${2}"
+    fi
+    shift
+    shift
+
+    for PATHPREFIX in "${PATHS[@]}"
+    do
+        if [ -x $PATHPREFIX$VERSION$PATHSUFIX ]; then
+            $NICE $PATHPREFIX$VERSION$PATHSUFIX "$@"
+            exit
+        fi
+    done
+fi
+
 CLUSTERARG=""
 CLUSTERSUFFIX=""
 
@@ -13,25 +39,18 @@ if [ "${1}"x = "--virtual"x ]; then
     shift
 fi
 
-PROGRAM=pg_restore
-PATHS=("/usr/lib/postgresql/" "/usr/pgsql-")
-PATHSUFIX="/bin/pg_restore"
-SUPPORTEDVERSIONS=( "10" "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" "8.4" "8.3" "8.2" )
-for ver in "${SUPPORTEDVERSIONS[@]}"
+SUPPORTEDVERSIONS=( "13" "12" "11" "10" )
+for ((i=${#SUPPORTEDVERSIONS[@]}-1; i>=0; i--)); # bereme nejstarší dostupnou verzi
 do
+    ver=${SUPPORTEDVERSIONS[$i]}
+
     for PATHPREFIX in "${PATHS[@]}"
     do
-        if [ -x $PATHPREFIX$ver$PATHSUFIX ]; then 
+        if [ -x $PATHPREFIX$ver$PATHSUFIX ]; then
     	        PROGRAM=$PATHPREFIX$ver$PATHSUFIX
     	        break 2;
         fi
     done
 done
-
-if [ -x /bin/nice ]; then
-    NICE=/bin/nice
-else 
-    NICE=/usr/bin/nice
-fi
 
 $NICE $PROGRAM "$@"

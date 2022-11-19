@@ -1,0 +1,143 @@
+#!/bin/sh
+
+# DEBUG=1
+FLEXIBEE_ARGS=""
+FLEXIBEE_JAVA_ARGS="-Xmx384m -client -XX:MaxPermSize=128m -XX:-OmitStackTraceInFastThrow"
+FLEXIBEE_LIB_DIR="/usr/share/flexibee/lib/"
+
+_debug() {
+	if [ -n "${DEBUG}" ]
+	then
+		echo "DEBUG:   $1" >&2 
+		shift
+		for text in "$@"
+		do
+			echo "         ${text}" >&2
+		done
+	fi
+}
+
+_error() {
+	echo "ERROR:   $1" >&2
+	shift
+	for text in "$@"
+	do
+		echo "         ${text}" >&2
+	done
+}
+
+findjava() {
+	# We try hard to find the proper 'java' command
+	if [ -n "${FLEXIBEE_JAVA}" ] && [ -x "${FLEXIBEE_JAVA}" ]
+        then
+		JAVACMD="${FLEXIBEE_JAVA}"
+		_debug "Using \$FLEXIBEE_JAVA to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-8-oracle/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-8-oracle/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-8-oracle/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-9-oracle/jre/bin/java ]
+        then
+		JAVACMD='/usr/lib/jvm/java-9-oracle/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-9-oracle/jre/bin/java to find java virtual machine."
+	elif [ -x /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java ]
+		then
+		JAVACMD='/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
+		_debug "Using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java to find java virtual machine."
+	elif [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+	then
+		_debug "Using \$JAVACMD to find java virtual machine."
+	elif [ -n "${JAVA_BINDIR}" ] && [ -x "${JAVA_BINDIR}/java" ]
+	then
+		JAVACMD="${JAVA_BINDIR}/java"
+		_debug "Using \$JAVA_BINDIR to find java virtual machine."
+	elif [ -n "${JAVA_HOME}" ] && [ -x "${JAVA_HOME}/bin/java" ]
+	then
+		JAVACMD="${JAVA_HOME}/bin/java"
+		_debug "Using \$JAVA_HOME to find java virtual machine."
+	else
+		JAVACMD=$(which java)
+		if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+		then
+			_debug "Using \$PATH to find java virtual machine."
+		elif [ -x /usr/bin/java ]
+		then
+			_debug "Using /usr/bin/java to find java virtual machine."
+			JAVACMD=/usr/bin/java
+		fi
+	fi
+
+	# if we were successful, we return 0 else we complain and return 1
+	if [ -n "${JAVACMD}" ] && [ -x "${JAVACMD}" ]
+	then
+		_debug "Using '$JAVACMD' as java virtual machine..."
+		return 0
+	else
+		_error "Couldn't find a java virtual machine," \
+		       "define JAVACMD, JAVA_BINDIR, JAVA_HOME or PATH."
+		return 1
+	fi
+}
+_source() {
+	if [ -f "$1" ]
+	then
+		_debug "Sourcing '$1'."
+		. "$1"
+	fi
+}
+
+# Fix for Stupid Debian settings in /etc/sysctl.d/bindipv6only.conf
+if [ -f /proc/sys/net/ipv6/bindv6only -a x"`cat /proc/sys/net/ipv6/bindv6only`" = x"1" ]; then 
+    FLEXIBEE_JAVA_ARGS="${FLEXIBEE_JAVA_ARGS} -Djava.net.preferIPv4Stack=true"
+    echo "Disabling IPv6 support in ABRA Flexi due to the System settings"
+fi
+
+if [ -f /etc/default/flexibee ]; then
+	. /etc/default/flexibee
+fi
+
+findjava
+if [ $? -ne 0 ]
+then
+	exit 1
+fi
+
+winstrompath="/usr/share/flexibee" # nothing happens if winstrom is not installed
+	                            # under something/bin
+
+
+# we try different possibilities to find winstrom jars
+for jar in "${winstrompath}" "${winstrompath}/share/flexibee" "${winstrompath}/flexibee" "${winstrompath}/share/winstrom" "${winstrompath}/winstrom"
+do
+	for i in ${jar}/lib/winstrom-*.jar; do
+		if [ -f $i ]; then
+			winstromdir="${jar}"
+			_debug "ABRA Flexi Directory is '${jar}'."
+			break
+		fi
+	done
+
+	if [ ! -z "${winstromdir}" ]; then
+		break
+	fi
+done
+
+if [ -z "${winstromdir}" ]
+then
+	_error "Couldn't find ABRA Flexi under '${winstrompath}'."
+	exit 1
+fi
+
+_debug "ABRA Flexi Directory is '${winstromdir}'."
+
+# The CLASSPATH also lets one specify additional jars, which is good, if
+# you want to add a new Look&Feel jar (the motif one is so ugly...).
+
+export CLASSPATH="${ADD_JARS}:${CLASSPATH}"
+for i in `cat ${winstromdir}/lib/flexibee2xml.txt`; do
+	CLASSPATH="${winstromdir}/lib/${i}:${CLASSPATH}"
+done
+
+_debug "ClassPath is '$CLASSPATH'."
+
+${JAVACMD} -cp $CLASSPATH -Dwinstromdir=${winstromdir}/lib $FLEXIBEE_JAVA_ARGS cz.winstrom.uiswing.xml.FlexiBee2XML $FLEXIBEE_ARGS $@

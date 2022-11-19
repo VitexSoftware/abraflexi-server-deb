@@ -15,6 +15,12 @@ then
     sed -i '/assistive_technologies/c\#assistive_technologies=org.GNOME.Accessibility.AtkWrapper' /usr/lib/jvm/java-11-openjdk-amd64/conf/accessibility.properties
 fi
 
+sed -i '/xmldsig#rsa-sha1/d' /etc/java*/security/java.security
+sed -i '/xmldsig#sha1/d' /etc/java*/security/java.security
+sed -i '/xmldsig#dsa-sha1/d' /etc/java*/security/java.security
+sed -i '/xmldsig-more#sha1-rsa-MGF1/d' /etc/java*/security/java.security
+sed -i '/xmldsig-more#ecdsa-sha1/d' /etc/java*/security/java.security
+
 #abraflexi-licensecheck
 
 if [ -f /usr/bin/update-mime-database ]; then
@@ -50,7 +56,7 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then
 
 	DBVERSION=11
 	PATHPGSQL="/usr/lib/postgresql/"
-	SUPPORTEDVERSIONS=( "11" "9.6" "9.5" "9.4" "9.3" "9.2" "9.1" "9.0" )
+        SUPPORTEDVERSIONS=( "13" "12" "11" "10" )
 	for ver in "${SUPPORTEDVERSIONS[@]}"
 	do
 		if [ -d $PATHPGSQL$ver ]; then 

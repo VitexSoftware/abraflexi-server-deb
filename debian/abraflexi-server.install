@@ -21,7 +21,7 @@ server/abraflexi-server.desktop	 usr/share/applications/
 #usr/share/doc/flexibee/
 bin/*				usr/share/abraflexi/bin
 usr/share/flexibee/lib/*	usr/share/abraflexi/lib
-usr/share/flexibee/sql/*	usr/share/abraflexi/sql
+#usr/share/flexibee/sql/*	usr/share/abraflexi/sql
 #usr/share/fonts/truetype/
 #usr/share/mimelnk/application
 #usr/share/mime/packages
