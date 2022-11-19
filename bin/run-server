@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COMMAND="/usr/share/flexibee/bin/run-server-su"
+COMMAND="/usr/share/abraflexi/bin/run-server-su"
 
 MYLANG=`echo $LANG | cut -c 1-2`
 if [ x"$MYLANG" = x"cs" ]; then
@@ -35,7 +35,7 @@ runInTerminal()
 	SU="$1 $COMMAND"
 
 	if [ -x /usr/bin/konsole ]; then
-		/usr/bin/konsole --icon /usr/share/flexibee/flexibee-logo-small.png --caption  "$DESCRIPTION" -e "$SU" && exit 0
+		/usr/bin/konsole --icon /usr/share/abraflexi/flexibee-logo-small.png --caption  "$DESCRIPTION" -e "$SU" && exit 0
 		exit 1
 	fi
 
@@ -58,7 +58,7 @@ runSudo()
 	fi
 
 	if [ -x /usr/bin/kdesudo ]; then
-	    /usr/bin/kdesudo -i /usr/share/flexibee/flexibee-logo-small.png --comment "$DESCRIPTION" $COMMAND && exit 0
+	    /usr/bin/kdesudo -i /usr/share/abraflexi/flexibee-logo-small.png --comment "$DESCRIPTION" $COMMAND && exit 0
 	    exit 1
 	fi
 }
@@ -76,7 +76,7 @@ runSu()
 	fi
 
 	if [ -x /usr/bin/kdesu ]; then
-	    /usr/bin/kdesu -i /usr/share/flexibee/flexibee-logo-small.png $COMMAND && exit 0
+	    /usr/bin/kdesu -i /usr/share/abraflexi/flexibee-logo-small.png $COMMAND && exit 0
 	    exit 1
 	fi
 

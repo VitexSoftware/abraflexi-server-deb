@@ -3,7 +3,7 @@
 # DEBUG=1
 FLEXIBEE_ARGS=""
 FLEXIBEE_JAVA_ARGS="-Xmx384m -client -XX:MaxPermSize=128m -XX:-OmitStackTraceInFastThrow"
-FLEXIBEE_LIB_DIR="/usr/share/flexibee/lib/"
+FLEXIBEE_LIB_DIR="/usr/share/abraflexi/lib/"
 
 _debug() {
 	if [ -n "${DEBUG}" ]
@@ -102,7 +102,7 @@ then
 	exit 1
 fi
 
-winstrompath="/usr/share/flexibee" # nothing happens if winstrom is not installed
+winstrompath="/usr/share/abraflexi" # nothing happens if winstrom is not installed
 	                            # under something/bin
 
 
