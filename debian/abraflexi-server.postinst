@@ -119,22 +119,6 @@ if [ -f /usr/share/abraflexi/bin/update.sh ]; then
 	/usr/share/abraflexi/bin/update.sh || exit 1
 fi
 
-# the keyring in /var that gets fetched by apt-key net-update
-# if it does not yet exist, copy it to avoid uneeded net copy
-KEYRINGDIR="/var/lib/apt/keyrings"
-KEYRING="${KEYRINGDIR}/flexibee.gpg"
-NEWGPG="/usr/share/flexibee/flexibee.gpg"
-
-if ! test -d $KEYRINGDIR; then
-     mkdir -m 755 -p $KEYRINGDIR
-fi
-
-if ! diff -q --ignore-space-change $NEWGPG $KEYRING > /dev/null 2>&1; then
-     cp $NEWGPG $KEYRING
-     touch $KEYRING
-     apt-key add $KEYRING
-fi
-
 
 db_stop
 
