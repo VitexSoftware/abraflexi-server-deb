@@ -297,4 +297,7 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
   * v2022.5.5 repack
   * v2022.5.5 repack
 
- -- root <info@vitexsoftware.cz>  Sat, 19 Nov 2022 09:28:02 +0100
+  [ vitex ]
+  * Jammy and Kinetic build disabled for now
+
+ -- vitex <info@vitexsoftware.cz>  Sun, 20 Nov 2022 01:38:22 +0100
