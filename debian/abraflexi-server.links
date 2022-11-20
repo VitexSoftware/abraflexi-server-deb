@@ -1,6 +1,4 @@
 usr/share/abraflexi	usr/share/flexibee
 etc/default/abraflexi	etc/default/flexibee
-etc/abraflexi		etc/flexibee\
-etc/abraflexi		etc/flexibee\
+etc/abraflexi		etc/flexibee
 etc/abraflexi/abraflexi-server.xml	etc/abraflexi/flexibee-server.xml
-
