@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # DEBUG=1
-ABRAFLEXI_ARGS=""
-ABRAFLEXI_JAVA_ARGS="-Xmx384m -client -XX:MaxPermSize=128m -XX:-OmitStackTraceInFastThrow"
-ABRAFLEXI_LIB_DIR="/usr/share/abraflexi/lib/"
+FLEXIBEE_ARGS=""
+FLEXIBEE_JAVA_ARGS="-Xmx384m -client -XX:MaxPermSize=128m -XX:-OmitStackTraceInFastThrow"
+FLEXIBEE_LIB_DIR="/usr/share/abraflexi/lib/"
 
 _debug() {
 	if [ -n "${DEBUG}" ]
@@ -28,10 +28,10 @@ _error() {
 
 findjava() {
 	# We try hard to find the proper 'java' command
-	if [ -n "${ABRAFLEXI_JAVA}" ] && [ -x "${ABRAFLEXI_JAVA}" ]
+	if [ -n "${FLEXIBEE_JAVA}" ] && [ -x "${FLEXIBEE_JAVA}" ]
         then
-		JAVACMD="${ABRAFLEXI_JAVA}"
-		_debug "Using \$ABRAFLEXI_JAVA to find java virtual machine."
+		JAVACMD="${FLEXIBEE_JAVA}"
+		_debug "Using \$FLEXIBEE_JAVA to find java virtual machine."
 	elif [ -x /usr/lib/jvm/java-8-oracle/jre/bin/java ]
         then
 		JAVACMD='/usr/lib/jvm/java-8-oracle/jre/bin/java'
@@ -88,12 +88,12 @@ _source() {
 
 # Fix for Stupid Debian settings in /etc/sysctl.d/bindipv6only.conf
 if [ -f /proc/sys/net/ipv6/bindv6only -a x"`cat /proc/sys/net/ipv6/bindv6only`" = x"1" ]; then 
-    ABRAFLEXI_JAVA_ARGS="${ABRAFLEXI_JAVA_ARGS} -Djava.net.preferIPv4Stack=true"
+    FLEXIBEE_JAVA_ARGS="${FLEXIBEE_JAVA_ARGS} -Djava.net.preferIPv4Stack=true"
     echo "Disabling IPv6 support in ABRA Flexi due to the System settings"
 fi
 
-if [ -f /etc/default/abraflexi ]; then
-	. /etc/default/abraflexi
+if [ -f /etc/default/flexibee ]; then
+	. /etc/default/flexibee
 fi
 
 findjava
@@ -107,7 +107,7 @@ winstrompath="/usr/share/abraflexi" # nothing happens if winstrom is not install
 
 
 # we try different possibilities to find winstrom jars
-for jar in "${winstrompath}" "${winstrompath}/share/abraflexi" "${winstrompath}/abraflexi" "${winstrompath}/share/winstrom" "${winstrompath}/winstrom"
+for jar in "${winstrompath}" "${winstrompath}/share/flexibee" "${winstrompath}/flexibee" "${winstrompath}/share/winstrom" "${winstrompath}/winstrom"
 do
 	for i in ${jar}/lib/winstrom-*.jar; do
 		if [ -f $i ]; then
@@ -134,10 +134,10 @@ _debug "ABRA Flexi Directory is '${winstromdir}'."
 # you want to add a new Look&Feel jar (the motif one is so ugly...).
 
 export CLASSPATH="${ADD_JARS}:${CLASSPATH}"
-for i in `cat ${winstromdir}/lib/abraflexi2xml.txt`; do
+for i in `cat ${winstromdir}/lib/flexibee2xml.txt`; do
 	CLASSPATH="${winstromdir}/lib/${i}:${CLASSPATH}"
 done
 
 _debug "ClassPath is '$CLASSPATH'."
 
-${JAVACMD} -cp $CLASSPATH -Dwinstromdir=${winstromdir}/lib $ABRAFLEXI_JAVA_ARGS cz.winstrom.uiswing.xml.FlexiBee2XML $ABRAFLEXI_ARGS $@
+${JAVACMD} -cp $CLASSPATH -Dwinstromdir=${winstromdir}/lib $FLEXIBEE_JAVA_ARGS cz.winstrom.uiswing.xml.FlexiBee2XML $FLEXIBEE_ARGS $@
