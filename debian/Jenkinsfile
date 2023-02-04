@@ -33,7 +33,10 @@ node() {
             }
         }
 	stage('Get Version') {
-	    def upstream_version = sh('debian/curver.sh')
+            def upstream_version = sh(
+                script: 'debian/curver.sh',
+                returnStdout: true
+            ).trim()
 	    sh('dch -v' + upstream_version + ' release v' + upstream_version);
 	}
     }
