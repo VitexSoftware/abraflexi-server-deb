@@ -16,6 +16,13 @@ node() {
         stage('SCM Checkout') {
             checkout scm
         }
+	stage('Set Version') {
+            def upstream_version = sh(
+                script: 'debian/curver.sh',
+                returnStdout: true
+            ).trim()
+	    sh('dch -v' + upstream_version + ' release v' + upstream_version);
+	}
     }
 }
 
