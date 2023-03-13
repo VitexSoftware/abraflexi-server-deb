@@ -22,12 +22,48 @@ Kromě toho obsahuje jěště tyto dodatečné opravy a vylepšení.
 Instalace
 ---------
 
-Pro Debian či Ubuntu prosím použijte [repozitář](http://vitexsoftware.cz/repos.php):
+Pro Debian 10,11 či Ubuntu 20.04,22.04 prosím použijte [repozitář](http://vitexsoftware.com/repos.php):
 
     wget -O - http://repo.vitexsoftware.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://repo.vitexsoftware.cz/ stable main > /etc/apt/sources.list.d/vitexsoftware.list
     apt update
     apt install flexibee-server flexibee-server-backup
+
+
+Pravidelná aktualizace pak vypadá, takto:
+
+```
+vitex@flexibee-dev ~ % sudo apt upgrade   
+Načítají se seznamy balíků… Hotovo
+Vytváří se strom závislostí… Hotovo
+Načítají se stavové informace… Hotovo
+Propočítává se aktualizace… Hotovo
+Následující balíky budou aktualizovány:
+  abraflexi-server abraflexi-server-backup
+2 aktualizováno, 0 nově instalováno, 0 k odstranění a 0 neaktualizováno.
+Nutno stáhnout 176 MB archivů.
+Po této operaci bude na disku použito dalších 226 kB.
+Chcete pokračovat? [Y/n] 
+Stahuje se:1 http://repo.vitexsoftware.com bullseye/main amd64 abraflexi-server-backup all 2023.2.1~bullseye~24 [2 476 B]
+Stahuje se:2 http://repo.vitexsoftware.com bullseye/main amd64 abraflexi-server all 2023.2.1~bullseye~24 [176 MB]
+Staženo 176 MB za 2s (92,8 MB/s)           
+Načítám soubory se změnami... Hotovo
+Přednastavují se balíky…
+(Načítá se databáze … nyní je nainstalováno 84419 souborů a adresářů.)
+Připravuje se nahrazení …/abraflexi-server-backup_2023.2.1~bullseye~24_all.deb …
+Rozbaluje se abraflexi-server-backup (2023.2.1~bullseye~24) přes (2023.1.5~bullseye~23) …
+Připravuje se nahrazení …/abraflexi-server_2023.2.1~bullseye~24_all.deb …
+Rozbaluje se abraflexi-server (2023.2.1~bullseye~24) přes (2023.1.5~bullseye~23) …
+Nastavuje se balík abraflexi-server (2023.2.1~bullseye~24) …
+Připravuji databázi PostgreSQL pro systém AbraFlexi ...
+  Použiji existující databázi ...
+Nastavuje se balík abraflexi-server-backup (2023.2.1~bullseye~24) …
+Zpracovávají se spouštěče pro balík mailcap (3.69) …
+Zpracovávají se spouštěče pro balík ufw (0.36-7.1) …
+vitex@flexibee-dev ~ % 
+
+```
+
 
 
 Přihlášení
