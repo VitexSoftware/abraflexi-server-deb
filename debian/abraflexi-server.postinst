@@ -56,7 +56,7 @@ if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then
 
 	DBVERSION=11
 	PATHPGSQL="/usr/lib/postgresql/"
-        SUPPORTEDVERSIONS=( "13" "12" "11" "10" )
+        SUPPORTEDVERSIONS=( "14" "13" "12" "11" "10" )
 	for ver in "${SUPPORTEDVERSIONS[@]}"
 	do
 		if [ -d $PATHPGSQL$ver ]; then 
