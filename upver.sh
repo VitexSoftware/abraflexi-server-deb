@@ -6,7 +6,7 @@ LATESTPKG=`basename $LATESTURL`
 
 
 VERSION=`echo $LATESTPKG | awk -F_ '{print $2}'`
-REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
+#REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split/\./,$_]}, 0, -1), map {++$_} pop @{[split/\./,$_]}), "\n";'`
 
 echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 
