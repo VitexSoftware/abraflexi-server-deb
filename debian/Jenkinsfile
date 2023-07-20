@@ -17,6 +17,7 @@ node() {
     ansiColor('xterm') {
         stage('SCM Checkout') {
             checkout scm
+            sh './fresh.sh'
             def control = readFile(file:  env.WORKSPACE + '/debian/control')
             def lines = control.readLines()
             for (line in lines) {
@@ -32,13 +33,13 @@ node() {
                 }
             }
         }
-	stage('Get Version') {
-            def upstream_version = sh(
-                script: 'debian/curver.sh',
-                returnStdout: true
-            ).trim()
-	    sh('dch -v' + upstream_version + ' release v' + upstream_version);
-	}
+        stage('Get Version') {
+                def upstream_version = sh(
+                    script: 'debian/curver.sh',
+                    returnStdout: true
+                ).trim()
+            sh('dch -v' + upstream_version + ' release v' + upstream_version)
+        }
     }
 }
 
