@@ -50,7 +50,7 @@ distributions.each {
                     script: 'dpkg-parsechangelog --show-field Version',
                     returnStdout: true
                 ).trim()
-                ver = VERSION + '.' + env.BUILD_NUMBER  + '~' + distroCodename
+                ver = version + '.' + env.BUILD_NUMBER  + '~' + distroCodename
             }
             stage('Build ' + distribution) {
                 buildImage.inside {
