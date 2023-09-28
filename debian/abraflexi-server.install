@@ -34,6 +34,7 @@ server/abraflexi-server.png 		usr/share/pixmaps
 server/avahi/abraflexi.service  	etc/avahi/services/
 server/abraflexi.service  		lib/systemd/system
 debian/javax.annotation-api-1.3.2.jar 	usr/share/abraflexi/lib/
-debian/jaxb-api-2.3.0.jar 		usr/share/abraflexi/lib/jaxb-api-2.3.0.jar
+debian/jaxb-api-2.3.0.jar 		usr/share/abraflexi/lib/
+
 
 
