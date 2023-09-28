@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+  <id>eu.flexibee.abraflexi_server</id>
+  
+  <name>AbraFlexi Server</name>
+  <summary>Czech Economic system Engine &amp; API Server</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <description>
+    <p>
+      Would you prefer a modern web interface that offers an immediate view of your data and lets you quickly create an invoice, even on a mobile phone or tablet? Or would you prefer the standard desktop application interface for Windows, Linux and macOS with the complete range of modules? Both versions work with the same data and you can use the same credentials to log in to both. The main difference is the range of features and the way you use them.
+    </p>
+  </description>
+  
+  <icon type="stock">abraflexi-server</icon>
+  
+  <categories>
+    <category>Office</category>
+    <category>Finance</category>
+  </categories>
+  
+  <provides>
+    <binary>abraflexi-server</binary>
+  </provides>
+</component>
+

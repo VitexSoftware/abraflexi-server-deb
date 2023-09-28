@@ -9,6 +9,7 @@ server/ufw/abraflexi	etc/ufw/applications.d/
 
 #usr/share/app-install/  
 server/abraflexi-server.desktop	 usr/share/applications/
+debian/eu.flexibee.abraflexi_server.metainfo.xml	/usr/share/metainfo/
 
 #usr/share/doc/  
 #usr/share/flexibee/*	usr/share/abraflexi
