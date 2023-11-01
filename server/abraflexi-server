@@ -213,10 +213,6 @@ for virtual in $ABRAFLEXI_VIRTUALS; do
     # remove potential extra separator from end
     MYCLASSPATH=${MYCLASSPATH%:}
 
-    # The CLASSPATH also lets one specify additional jars, which is good, if
-    # you want to add a new Look&Feel jar (the motif one is so ugly...).
-    export MYCLASSPATH
-
     _debug "ClassPath for $virtual is '$MYCLASSPATH'."
 
     SERVER_JAVA_ARGS="$ABRAFLEXI_SERVER_JAVA_ARGS"
