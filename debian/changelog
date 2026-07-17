@@ -214,6 +214,10 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
   * Modernize Jenkinsfile distro targets: drop EOL debian:bullseye and
     ubuntu:focal, build for bookworm/trixie/jammy/noble/resolute
     (matching vitexsoftware-repo.yml)
+  * Rewrite Jenkinsfile using the modern parallel-branches
+    build/test/archive structure from BuildImages/Test/Jenkinsfile,
+    keeping fresh.sh/curver.sh vendor repackaging and dropping the
+    redundant per-distro upver.sh re-download
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
