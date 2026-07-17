@@ -211,6 +211,9 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
     file accordingly.
   * Increase abraflexi.service TimeoutStartSec to 180s to accommodate
     slow JVM boot
+  * Modernize Jenkinsfile distro targets: drop EOL debian:bullseye and
+    ubuntu:focal, build for bookworm/trixie/jammy/noble/resolute
+    (matching vitexsoftware-repo.yml)
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:

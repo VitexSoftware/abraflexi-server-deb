@@ -1,6 +1,9 @@
 #!groovy
 
-String[] distributions = ['debian:bullseye', 'ubuntu:focal', 'ubuntu:jammy']
+// debian:bullseye and ubuntu:focal are EOL and no longer published on
+// repo.vitexsoftware.com (see vars/vitexsoftware-repo.yml in VSAnsible) -
+// targeting them makes apt-get update fail inside the build container.
+String[] distributions = ['debian:bookworm', 'debian:trixie', 'ubuntu:jammy', 'ubuntu:noble', 'ubuntu:resolute']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
