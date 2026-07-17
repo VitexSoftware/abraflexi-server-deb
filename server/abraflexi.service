@@ -10,6 +10,7 @@ Restart=no
 RestartPreventExitStatus=255
 Type=forking
 PIDFile=/run/abraflexi.pid
+TimeoutStartSec=180
 
 [Install]
 WantedBy=multi-user.target

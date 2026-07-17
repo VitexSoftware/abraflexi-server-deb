@@ -209,6 +209,8 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
     PIDFile= references path below legacy directory /var/run/, updating
     /var/run/flexibee.pid → /run/flexibee.pid; please update the unit
     file accordingly.
+  * Increase abraflexi.service TimeoutStartSec to 180s to accommodate
+    slow JVM boot
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
