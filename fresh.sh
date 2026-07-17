@@ -25,6 +25,10 @@ cd ..
 #cd ..
 mkdir debian/tmp
 cd debian/tmp
-tar xzvf ../../orig/data.tar.gz
+# Vendor .deb's data archive compression has changed over time (gz -> xz);
+# auto-detect it instead of hardcoding, and locate whichever member ar
+# actually extracted rather than assuming a fixed filename.
+data_archive=$(ls ../../orig/data.tar.* | head -n1)
+tar xvf "$data_archive"
 cd ../..
 

@@ -221,6 +221,9 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
   * Fix fresh.sh: create orig/ before wget writes into it, add set -e so
     download/extraction failures fail loudly instead of cascading into a
     confusing dh_install missing-files error
+  * Fix fresh.sh: vendor .deb now ships data.tar.xz instead of
+    data.tar.gz, auto-detect the data archive instead of hardcoding the
+    filename/compression
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:
