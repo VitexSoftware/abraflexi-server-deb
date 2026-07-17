@@ -224,6 +224,10 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
   * Fix fresh.sh: vendor .deb now ships data.tar.xz instead of
     data.tar.gz, auto-detect the data archive instead of hardcoding the
     filename/compression
+  * Fix postinst: auto-detect newest installed PostgreSQL version
+    instead of a hardcoded 14/13/12/11/10 list, which silently fell back
+    to the stale default 11 and broke pg_createcluster on
+    bookworm/trixie/noble/resolute (PG15/17/16/18)
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:

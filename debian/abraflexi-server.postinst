@@ -54,16 +54,16 @@ CLIENT_TYPE=client
 # check if PostgreSQL cluster is installed.
 if [ -f /usr/bin/pg_createcluster -a -f /etc/init.d/abraflexi ]; then 
 
-	DBVERSION=11
+	# Pick the newest installed PostgreSQL version instead of maintaining
+	# a hardcoded list, which otherwise silently falls back to a stale
+	# default (e.g. 11) on any distro shipping a newer major version and
+	# breaks pg_createcluster with "no initdb program for version X found".
 	PATHPGSQL="/usr/lib/postgresql/"
-        SUPPORTEDVERSIONS=( "14" "13" "12" "11" "10" )
-	for ver in "${SUPPORTEDVERSIONS[@]}"
-	do
-		if [ -d $PATHPGSQL$ver ]; then 
-			DBVERSION=$ver
-			break;
-		fi
-	done
+	DBVERSION=11
+	if [ -d "$PATHPGSQL" ]; then
+		NEWEST=$(ls "$PATHPGSQL" 2>/dev/null | sort -V | tail -n1)
+		[ -n "$NEWEST" ] && DBVERSION="$NEWEST"
+	fi
 
 		if [ ! -f /etc/abraflexi/ws.cenServer.xml -a -f /usr/share/abraflexi/ws.cenServer.xml ]; then
 			cp /usr/share/abraflexi/ws.cenServer.xml /etc/abraflexi/ws.cenServer.xml || true
