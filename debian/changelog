@@ -218,6 +218,9 @@ abraflexi-server (2022.5.5) UNRELEASED; urgency=medium
     build/test/archive structure from BuildImages/Test/Jenkinsfile,
     keeping fresh.sh/curver.sh vendor repackaging and dropping the
     redundant per-distro upver.sh re-download
+  * Fix fresh.sh: create orig/ before wget writes into it, add set -e so
+    download/extraction failures fail loudly instead of cascading into a
+    confusing dh_install missing-files error
 
   [ root ]
   * FIXED: systemd[1]: /run/systemd/generator.late/flexibee.service:15:

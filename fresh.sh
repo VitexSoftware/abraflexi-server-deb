@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 PACKAGE="flexibee-server"
 LATESTURL=`curl -s -q https://www.flexibee.eu/podpora/stazeni-flexibee/stazeni-ekonomickeho-systemu-flexibee-linux/ | grep _all.deb | awk -F'"' '{print $2}' | head -n 1`
@@ -10,11 +11,12 @@ REVISION=`cat debian/revision | perl -ne 'chomp; print join(".", splice(@{[split
 
 echo XXXXXXXXXXXXXXXXXXXXXXXXXX Building $VERSION
 
+mkdir -p orig
+
 wget -c $LATESTURL -O orig/flexibee_${VERSION}_all.deb
 
 rm -rf debian/tmp data
 
-mkdir -p orig
 cd orig
 ar -x flexibee_${VERSION}_all.deb
 cd ..
